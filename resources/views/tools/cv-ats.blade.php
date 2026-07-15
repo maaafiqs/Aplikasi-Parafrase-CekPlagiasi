@@ -161,8 +161,12 @@
                 <div class="space-y-4 pt-4">
                     <h3 class="text-sm font-semibold text-slate-800 dark:text-zinc-200 border-b border-slate-200 dark:border-zinc-700 pb-2">Keahlian (Skills)</h3>
                     <div class="form-group">
-                        <label>Daftar Keahlian (Pisahkan dengan koma)</label>
-                        <textarea id="cvSkills" class="form-input" rows="2" placeholder="PHP, Laravel, React, SQL, Git"></textarea>
+                        <label>Hard Skills (Pisahkan dengan koma/baris)</label>
+                        <textarea id="cvHardSkills" class="form-input" rows="2" placeholder="PHP, Laravel, React, SQL, Git"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Soft Skills (Pisahkan dengan koma/baris)</label>
+                        <textarea id="cvSoftSkills" class="form-input" rows="2" placeholder="Problem Solving, Public Speaking, Time Management"></textarea>
                     </div>
                 </div>
             </form>
@@ -174,16 +178,32 @@
     <div class="lg:col-span-7 space-y-6">
         <div class="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-3xl p-6 border border-slate-200/60 dark:border-zinc-800/60 shadow-sm relative overflow-hidden flex flex-col h-full">
             
-            <div class="flex justify-between items-center mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                 <h2 class="text-xl font-bold flex items-center gap-2">
                     <i data-lucide="eye" class="w-5 h-5 text-indigo-500 dark:text-emerald-400"></i>
                     Pratinjau CV
                 </h2>
                 
-                <button id="btnExportPDF" class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
-                    <i data-lucide="download" class="w-4 h-4"></i>
-                    Unduh PDF ATS
-                </button>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2 bg-slate-100 dark:bg-zinc-800 p-1.5 rounded-xl border border-slate-200 dark:border-zinc-700">
+                        <span class="text-xs font-semibold px-1 text-indigo-600 dark:text-emerald-400">ID</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="langToggle" class="sr-only peer">
+                            <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-zinc-600 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-zinc-500 peer-checked:bg-indigo-500 dark:peer-checked:bg-emerald-500"></div>
+                        </label>
+                        <span class="text-xs font-semibold px-1 text-slate-400 peer-checked:text-indigo-600 dark:peer-checked:text-emerald-400">EN</span>
+                    </div>
+                    
+                    <button id="btnTranslate" class="px-3 py-2 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-emerald-500/10 dark:text-emerald-400 font-semibold text-sm hover:bg-indigo-100 dark:hover:bg-emerald-500/20 transition-colors hidden items-center gap-2 border border-indigo-200 dark:border-emerald-500/30">
+                        <i data-lucide="languages" class="w-4 h-4"></i>
+                        Terjemahkan
+                    </button>
+
+                    <button id="btnExportPDF" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Unduh PDF
+                    </button>
+                </div>
             </div>
 
             <!-- A4 Preview Container -->
@@ -211,7 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cvLocation: document.getElementById('cvLocation'),
         cvLink: document.getElementById('cvLink'),
         cvSummary: document.getElementById('cvSummary'),
-        cvSkills: document.getElementById('cvSkills')
+        cvHardSkills: document.getElementById('cvHardSkills'),
+        cvSoftSkills: document.getElementById('cvSoftSkills')
     };
 
     let experienceData = [];
@@ -252,12 +273,19 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'section-card';
             card.innerHTML = `
                 <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold text-slate-500">Pekerjaan #${index + 1}</span>
+                    <span class="text-xs font-bold text-slate-500">Pengalaman #${index + 1}</span>
                     <button type="button" class="text-xs text-red-500 hover:underline" onclick="removeExp(${index})">Hapus</button>
+                </div>
+                <div class="form-group mb-3">
+                    <select class="form-input text-sm py-1.5" onchange="updateExp(${index}, 'type', this.value)">
+                        <option value="Kerja" ${exp.type === 'Kerja' ? 'selected' : ''}>Pengalaman Kerja</option>
+                        <option value="Magang/Seminar" ${exp.type === 'Magang/Seminar' ? 'selected' : ''}>Pengalaman Magang/Seminar</option>
+                        <option value="Umum" ${exp.type === 'Umum' ? 'selected' : ''}>Pengalaman Umum</option>
+                    </select>
                 </div>
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <div class="form-group mb-0"><input type="text" class="form-input text-sm py-1.5" placeholder="Posisi" value="${exp.title}" oninput="updateExp(${index}, 'title', this.value)"></div>
-                    <div class="form-group mb-0"><input type="text" class="form-input text-sm py-1.5" placeholder="Perusahaan" value="${exp.company}" oninput="updateExp(${index}, 'company', this.value)"></div>
+                    <div class="form-group mb-0"><input type="text" class="form-input text-sm py-1.5" placeholder="Perusahaan/Institusi" value="${exp.company}" oninput="updateExp(${index}, 'company', this.value)"></div>
                 </div>
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <div class="form-group mb-0"><input type="text" class="form-input text-sm py-1.5" placeholder="Lokasi" value="${exp.location}" oninput="updateExp(${index}, 'location', this.value)"></div>
@@ -303,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.removeEdu = (idx) => { educationData.splice(idx, 1); renderEduForms(); };
 
     document.getElementById('btnAddExp').addEventListener('click', () => {
-        experienceData.push({ title: '', company: '', location: '', date: '', desc: '' });
+        experienceData.push({ type: 'Kerja', title: '', company: '', location: '', date: '', desc: '' });
         renderExpForms();
     });
 
@@ -313,8 +341,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
+    let isEnglish = false;
+    const langToggle = document.getElementById('langToggle');
+    const btnTranslate = document.getElementById('btnTranslate');
+
+    langToggle.addEventListener('change', (e) => {
+        isEnglish = e.target.checked;
+        if(isEnglish) {
+            btnTranslate.style.display = 'flex';
+        } else {
+            btnTranslate.style.display = 'none';
+        }
+        updatePreview();
+    });
+
+    function getHeading(id, en) {
+        return isEnglish ? en : id;
+    }
+
     function updatePreview() {
-        const name = elements.cvName.value.toUpperCase() || 'NAMA ANDA';
+        const name = elements.cvName.value.toUpperCase() || (isEnglish ? 'YOUR NAME' : 'NAMA ANDA');
         const contact = [
             elements.cvLocation.value,
             elements.cvPhone.value,
@@ -324,33 +370,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let expHtml = '';
         if(experienceData.length > 0) {
-            expHtml += `<div class="section-title">PENGALAMAN KERJA</div>`;
-            experienceData.forEach(exp => {
-                const bullets = exp.desc.split('\n').filter(s => s.trim()).map(s => `<li>${s}</li>`).join('');
-                expHtml += `
-                    <div style="margin-bottom: 10px;">
-                        <div class="item-header">
-                            <span>${exp.company.toUpperCase()}</span>
-                            <span>${exp.location}</span>
-                        </div>
-                        <div class="item-header" style="margin-bottom: 5px;">
-                            <span>${exp.title}</span>
-                            <span>${exp.date}</span>
-                        </div>
-                        ${bullets ? `<ul style="margin: 0; padding-left: 20px;">${bullets}</ul>` : ''}
-                    </div>
-                `;
-            });
+            // Group experiences
+            const groups = {
+                'Kerja': experienceData.filter(e => e.type === 'Kerja'),
+                'Magang/Seminar': experienceData.filter(e => e.type === 'Magang/Seminar'),
+                'Umum': experienceData.filter(e => e.type === 'Umum')
+            };
+
+            const labels = {
+                'Kerja': getHeading('PENGALAMAN KERJA', 'WORK EXPERIENCE'),
+                'Magang/Seminar': getHeading('PENGALAMAN MAGANG & SEMINAR', 'INTERNSHIP & SEMINAR EXPERIENCE'),
+                'Umum': getHeading('PENGALAMAN', 'EXPERIENCE')
+            };
+
+            for (const [key, group] of Object.entries(groups)) {
+                if (group.length > 0) {
+                    expHtml += `<div class="section-title">${labels[key]}</div>`;
+                    group.forEach(exp => {
+                        const bullets = exp.desc.split('\n').filter(s => s.trim()).map(s => `<li>${s}</li>`).join('');
+                        expHtml += `
+                            <div style="margin-bottom: 10px;">
+                                <div class="item-header">
+                                    <span>${(exp.company||'').toUpperCase()}</span>
+                                    <span>${exp.location}</span>
+                                </div>
+                                <div class="item-header" style="margin-bottom: 5px;">
+                                    <span>${exp.title}</span>
+                                    <span>${exp.date}</span>
+                                </div>
+                                ${bullets ? `<ul style="margin: 0; padding-left: 20px;">${bullets}</ul>` : ''}
+                            </div>
+                        `;
+                    });
+                }
+            }
         }
 
         let eduHtml = '';
         if(educationData.length > 0) {
-            eduHtml += `<div class="section-title">EDUCATION</div>`;
+            eduHtml += `<div class="section-title">${getHeading('PENDIDIKAN', 'EDUCATION')}</div>`;
             educationData.forEach(edu => {
                 eduHtml += `
                     <div style="margin-bottom: 10px;">
                         <div class="item-header">
-                            <span>${edu.university.toUpperCase()}</span>
+                            <span>${(edu.university||'').toUpperCase()}</span>
                             <span>${edu.location}</span>
                         </div>
                         <div class="item-header" style="margin-bottom: 5px;">
@@ -363,15 +426,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let skillsHtml = '';
-        if(elements.cvSkills.value) {
-            const skillItems = elements.cvSkills.value.split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
-            const skillBullets = skillItems.map(s => `<li>${s}</li>`).join('');
-            skillsHtml = `
-                <div class="section-title">KEAHLIAN</div>
-                <ul style="margin: 0; padding-left: 20px;">
-                    ${skillBullets}
-                </ul>
-            `;
+        if (elements.cvHardSkills.value || elements.cvSoftSkills.value) {
+            skillsHtml += `<div class="section-title">${getHeading('KEAHLIAN', 'SKILLS')}</div>`;
+            if (elements.cvHardSkills.value) {
+                const hsItems = elements.cvHardSkills.value.split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+                skillsHtml += `
+                    <div style="font-weight: bold; margin-bottom: 3px; font-size: 10pt;">Hard Skills</div>
+                    <ul style="margin: 0 0 10px 0; padding-left: 20px;">
+                        ${hsItems.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                `;
+            }
+            if (elements.cvSoftSkills.value) {
+                const ssItems = elements.cvSoftSkills.value.split(/[,|\n]+/).map(s => s.trim()).filter(Boolean);
+                skillsHtml += `
+                    <div style="font-weight: bold; margin-bottom: 3px; font-size: 10pt;">Soft Skills</div>
+                    <ul style="margin: 0; padding-left: 20px;">
+                        ${ssItems.map(s => `<li>${s}</li>`).join('')}
+                    </ul>
+                `;
+            }
         }
 
         let headerHtml = `
@@ -409,6 +483,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderExpForms();
     renderEduForms();
+
+    async function translateText(text) {
+        if(!text) return text;
+        try {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const res = await fetch('/api/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({ text: text, lang: 'en' })
+            });
+            const data = await res.json();
+            return data.translatedText || text;
+        } catch(e) {
+            console.error(e);
+            return text;
+        }
+    }
+
+    btnTranslate.addEventListener('click', async () => {
+        Swal.fire({
+            title: 'Menerjemahkan...',
+            text: 'Harap tunggu, memanggil API',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        if (elements.cvSummary.value) elements.cvSummary.value = await translateText(elements.cvSummary.value);
+
+        for (let i = 0; i < experienceData.length; i++) {
+            if (experienceData[i].title) experienceData[i].title = await translateText(experienceData[i].title);
+            if (experienceData[i].desc) experienceData[i].desc = await translateText(experienceData[i].desc);
+        }
+
+        for (let i = 0; i < educationData.length; i++) {
+            if (educationData[i].degree) educationData[i].degree = await translateText(educationData[i].degree);
+        }
+        
+        if (elements.cvHardSkills.value) elements.cvHardSkills.value = await translateText(elements.cvHardSkills.value);
+        if (elements.cvSoftSkills.value) elements.cvSoftSkills.value = await translateText(elements.cvSoftSkills.value);
+
+        renderExpForms();
+        renderEduForms();
+        updatePreview();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Selesai!',
+            text: 'Isi CV telah diterjemahkan.',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    });
 
     // PDF Export logic
     btnExportPDF.addEventListener('click', () => {
