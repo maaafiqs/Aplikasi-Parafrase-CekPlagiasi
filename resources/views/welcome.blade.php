@@ -56,6 +56,34 @@
         .dark ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+        /* SweetAlert2 Theme Overrides matching the app design */
+        .swal2-popup {
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            border-radius: 1.25rem !important;
+            background: #ffffff !important;
+            color: #1e293b !important; /* slate-800 */
+            border: 1px solid #e2e8f0 !important; /* slate-200 */
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+        }
+        .dark .swal2-popup {
+            background: #18181b !important; /* zinc-900 */
+            color: #f4f4f5 !important; /* zinc-100 */
+            border: 1px solid #27272a !important; /* zinc-800 */
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5) !important;
+        }
+        .swal2-title {
+            color: #0f172a !important; /* slate-900 */
+            font-weight: 700 !important;
+        }
+        .dark .swal2-title {
+            color: #ffffff !important;
+        }
+        .swal2-html-container {
+            color: #64748b !important; /* slate-500 */
+        }
+        .dark .swal2-html-container {
+            color: #a1a1aa !important; /* zinc-400 */
+        }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-zinc-950 text-slate-800 dark:text-zinc-100 min-h-screen transition-colors duration-300 relative overflow-x-hidden">
@@ -1185,20 +1213,20 @@
                         badge = `<span class="px-2 py-0.5 text-[10px] font-semibold tracking-wide rounded bg-rose-50 border border-rose-200/40 text-rose-600 dark:bg-rose-950/40 dark:border-rose-900/30 dark:text-rose-400 uppercase scale-95 origin-left">Typo</span>`;
                         desc = `Saran: <span class="font-bold text-rose-600 dark:text-rose-400">"${correction}"</span>`;
                         borderClass = 'border-rose-200/50 dark:border-rose-900/40';
-                        bgClass = 'bg-rose-50/10 dark:bg-rose-950/10';
-                        bgHoverClass = 'hover:bg-rose-50/20 dark:hover:bg-rose-950/20';
+                        bgClass = 'bg-rose-50 dark:bg-rose-950/20';
+                        bgHoverClass = 'hover:bg-rose-100/70 dark:hover:bg-rose-950/30';
                     } else if (type === 'foreign') {
                         badge = `<span class="px-2 py-0.5 text-[10px] font-semibold tracking-wide rounded bg-indigo-50 border border-indigo-200/40 text-indigo-600 dark:bg-indigo-950/40 dark:border-indigo-900/30 dark:text-indigo-400 uppercase scale-95 origin-left">Kata Asing</span>`;
                         desc = `<span class="text-slate-400 dark:text-zinc-500 font-medium">Bahasa Inggris baku</span>`;
                         borderClass = 'border-indigo-200/50 dark:border-indigo-900/40';
-                        bgClass = 'bg-indigo-50/10 dark:bg-indigo-950/10';
-                        bgHoverClass = 'hover:bg-indigo-50/20 dark:hover:bg-indigo-950/20';
+                        bgClass = 'bg-indigo-50 dark:bg-indigo-950/20';
+                        bgHoverClass = 'hover:bg-indigo-100/70 dark:hover:bg-indigo-950/30';
                     } else {
                         badge = `<span class="px-2 py-0.5 text-[10px] font-semibold tracking-wide rounded bg-amber-50 border border-amber-200/40 text-amber-600 dark:bg-amber-950/40 dark:border-amber-900/30 dark:text-amber-400 uppercase scale-95 origin-left">Tidak Baku</span>`;
                         desc = `<span class="text-slate-400 dark:text-zinc-500 font-medium">Bukan kata baku KBBI</span>`;
                         borderClass = 'border-amber-200/50 dark:border-amber-900/40';
-                        bgClass = 'bg-amber-50/10 dark:bg-amber-950/10';
-                        bgHoverClass = 'hover:bg-amber-50/20 dark:hover:bg-amber-950/20';
+                        bgClass = 'bg-amber-50 dark:bg-amber-950/20';
+                        bgHoverClass = 'hover:bg-amber-100/70 dark:hover:bg-amber-950/30';
                     }
                     
                     html += `
