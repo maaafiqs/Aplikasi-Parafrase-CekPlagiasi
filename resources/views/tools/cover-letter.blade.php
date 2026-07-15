@@ -272,12 +272,59 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const opt = {
-            margin:       0,
-            filename:     'Surat_Lamaran_' + (elements.senderName.value.replace(/ /g, '_') || 'Kerja') + '.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        // 1. Mock document.styleSheets to bypass html2canvas oklch parse error
+        const originalStyleSheets = document.styleSheets;
+        const letterStyleSheet = Array.from(document.styleSheets).find(sheet => {
+            try {
+                const rules = sheet.cssRules || sheet.rules;
+                for (let i = 0; i < rules.length; i++) {
+                    if (rules[i].selectorText && rules[i].selectorText.includes('.a4-preview')) {
+                        return true;
+                    }
+                }
+            } catch (e) {
+                // Ignore cross-origin stylesheet errors
+            }
+            return false;
+        });
+
+        try {
+            Object.defineProperty(document, 'styleSheets', {
+                value: letterStyleSheet ? [letterStyleSheet] : [],
+                configurable: true
+            });
+        } catch (e) {
+            console.warn("Could not redefine document.styleSheets", e);
+        }
+
+        // 2. Proxy window.getComputedStyle to neutralize oklch values
+        const originalGetComputedStyle = window.getComputedStyle;
+        window.getComputedStyle = function(el, pseudoEl) {
+            const style = originalGetComputedStyle(el, pseudoEl);
+            return new Proxy(style, {
+                get(target, prop) {
+                    if (prop === 'getPropertyValue') {
+                        return function(propertyName) {
+                            const val = target.getPropertyValue(propertyName);
+                            if (typeof val === 'string' && val.includes('oklch')) {
+                                if (propertyName.includes('background')) return 'rgb(255, 255, 255)';
+                                return 'rgb(0, 0, 0)';
+                            }
+                            return val;
+                        };
+                    }
+                    const val = target[prop];
+                    if (typeof val === 'string' && val.includes('oklch')) {
+                        if (prop === 'backgroundColor') return 'rgb(255, 255, 255)';
+                        if (prop.toLowerCase().includes('color')) return 'rgb(0, 0, 0)';
+                        return 'rgb(0, 0, 0)';
+                    }
+                    if (typeof val === 'function') {
+                        return val.bind(target);
+                    }
+                    return val;
+                }
+            });
         };
 
         // Clone the preview to remove padding/shadows for clean export
@@ -290,8 +337,32 @@ document.addEventListener('DOMContentLoaded', () => {
         printable.style.left = '-9999px';
         document.body.appendChild(printable);
 
+        const opt = {
+            margin:       0,
+            filename:     'Surat_Lamaran_' + (elements.senderName.value.replace(/ /g, '_') || 'Kerja') + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+
+        const cleanup = () => {
+            // Restore document.styleSheets
+            try {
+                Object.defineProperty(document, 'styleSheets', {
+                    value: originalStyleSheets,
+                    configurable: true
+                });
+            } catch (e) {}
+            // Restore getComputedStyle
+            window.getComputedStyle = originalGetComputedStyle;
+            // Remove cloned element
+            if (printable.parentNode) {
+                document.body.removeChild(printable);
+            }
+        };
+
         html2pdf().set(opt).from(printable).save().then(() => {
-            document.body.removeChild(printable);
+            cleanup();
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
@@ -300,11 +371,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 showConfirmButton: false
             });
         }).catch(err => {
-            document.body.removeChild(printable);
+            cleanup();
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
-                text: 'Terjadi kesalahan saat mengekspor PDF.'
+                text: 'Terjadi kesalahan saat mengekspor PDF: ' + (err.message || err)
             });
             console.error(err);
         });
