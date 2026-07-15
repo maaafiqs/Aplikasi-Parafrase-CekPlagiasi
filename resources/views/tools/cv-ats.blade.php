@@ -112,7 +112,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="form-group">
                             <label>No. Telepon / WA</label>
-                            <input type="text" id="cvPhone" class="form-input" placeholder="0812-3456-7890">
+                            <input type="text" id="cvPhone" class="form-input" placeholder="08xx - xxxx - xxxx">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
