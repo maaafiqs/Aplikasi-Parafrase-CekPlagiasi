@@ -5,7 +5,7 @@
 @push('scripts-top')
     <!-- html2pdf.js for client-side PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
+    <style id="cv-ats-styles">
         /* A4 aspect ratio and ATS CV styling */
         .cv-preview {
             width: 100%;
@@ -43,6 +43,24 @@
         .cv-preview ul { margin: 0 0 10px 0; padding-left: 20px; font-size: 10pt; }
         .cv-preview li { margin-bottom: 3px; }
         .cv-preview span { font-size: 10pt; }
+        
+        /* Template Styles */
+        .template-standard { }
+        
+        .template-profesional {
+            font-family: 'Calibri', 'Arial', sans-serif;
+            color: #1e293b;
+        }
+        .template-profesional h1 { color: #0f172a; border-bottom: 3px solid #3b82f6; padding-bottom: 5px; }
+        .template-profesional .section-title { color: #1d4ed8; border-bottom: 2px solid #93c5fd; }
+        .template-profesional .item-header { color: #0f172a; }
+        
+        .template-elegan {
+            font-family: 'Garamond', 'Georgia', serif;
+            color: #3f3f46;
+        }
+        .template-elegan h1 { font-family: 'Georgia', serif; color: #18181b; font-weight: normal; letter-spacing: 1px; }
+        .template-elegan .section-title { font-style: italic; border-bottom: 1px solid #71717a; text-align: center; }
         
         /* Form Styles */
         .form-group label {
@@ -185,6 +203,11 @@
                 </h2>
                 
                 <div class="flex flex-wrap items-center gap-3">
+                    <select id="templateSelector" class="px-2 py-1.5 rounded-xl text-xs font-semibold bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 cursor-pointer">
+                        <option value="template-standard">Standar (ATS Classic)</option>
+                        <option value="template-profesional">Profesional (Modern Blue)</option>
+                        <option value="template-elegan">Elegan (Serif Klasik)</option>
+                    </select>
                     <div class="flex items-center gap-2 bg-slate-100 dark:bg-zinc-800 p-1.5 rounded-xl border border-slate-200 dark:border-zinc-700">
                         <span class="text-xs font-semibold px-1 text-indigo-600 dark:text-emerald-400">ID</span>
                         <label class="relative inline-flex items-center cursor-pointer">
@@ -194,21 +217,26 @@
                         <span class="text-xs font-semibold px-1 text-slate-400 peer-checked:text-indigo-600 dark:peer-checked:text-emerald-400">EN</span>
                     </div>
                     
+                    <button id="btnReset" class="px-3 py-2 rounded-xl bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 font-semibold text-sm hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Reset</span>
+                    </button>
+                    
                     <button id="btnTranslate" class="px-3 py-2 rounded-xl bg-indigo-50 text-indigo-600 dark:bg-emerald-500/10 dark:text-emerald-400 font-semibold text-sm hover:bg-indigo-100 dark:hover:bg-emerald-500/20 transition-colors hidden items-center gap-2 border border-indigo-200 dark:border-emerald-500/30">
                         <i data-lucide="languages" class="w-4 h-4"></i>
-                        Terjemahkan
+                        <span class="hidden sm:inline">Terjemahkan</span>
                     </button>
 
                     <button id="btnExportPDF" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
                         <i data-lucide="download" class="w-4 h-4"></i>
-                        Unduh PDF
+                        <span class="hidden sm:inline">Unduh PDF</span>
                     </button>
                 </div>
             </div>
 
             <!-- A4 Preview Container -->
             <div class="w-full flex justify-center bg-slate-100 dark:bg-zinc-950/50 rounded-2xl p-4 overflow-x-auto">
-                <div id="previewContainer" class="cv-preview max-w-[800px] shrink-0" style="min-width: 600px;">
+                <div id="previewContainer" class="cv-preview template-standard max-w-[800px] shrink-0" style="min-width: 600px;">
                     <!-- Content injected via JS -->
                     <div id="cvContent"></div>
                 </div>
@@ -236,10 +264,68 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let experienceData = [];
-
     let educationData = [];
-
     let cvPhotoData = null;
+
+    function saveToStorage() {
+        const data = {
+            basic: {},
+            experience: experienceData,
+            education: educationData,
+            photo: cvPhotoData
+        };
+        for (const key in elements) {
+            data.basic[key] = elements[key].value;
+        }
+        localStorage.setItem('cvAtsData', JSON.stringify(data));
+    }
+
+    function loadFromStorage() {
+        const stored = localStorage.getItem('cvAtsData');
+        if (stored) {
+            try {
+                const data = JSON.parse(stored);
+                if (data.basic) {
+                    for (const key in elements) {
+                        if (data.basic[key] !== undefined) {
+                            elements[key].value = data.basic[key];
+                        }
+                    }
+                }
+                if (data.experience) experienceData = data.experience;
+                if (data.education) educationData = data.education;
+                if (data.photo) cvPhotoData = data.photo;
+            } catch (e) {}
+        }
+    }
+
+    // Load data on init
+    loadFromStorage();
+
+    document.getElementById('btnReset').addEventListener('click', () => {
+        Swal.fire({
+            title: 'Reset Form?',
+            text: 'Semua isian akan dihapus.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Reset',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                for (const key in elements) {
+                    elements[key].value = '';
+                }
+                experienceData = [];
+                educationData = [];
+                cvPhotoData = null;
+                document.getElementById('cvPhoto').value = '';
+                localStorage.removeItem('cvAtsData');
+                renderExpForms();
+                renderEduForms();
+                updatePreview();
+            }
+        });
+    });
 
     document.getElementById('cvPhoto').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -380,6 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updatePreview() {
+        saveToStorage();
         const name = elements.cvName.value.toUpperCase() || (isEnglish ? 'YOUR NAME' : 'NAMA ANDA');
         const contact = [
             elements.cvLocation.value,
@@ -504,6 +591,13 @@ document.addEventListener('DOMContentLoaded', () => {
     renderExpForms();
     renderEduForms();
 
+    const templateSelector = document.getElementById('templateSelector');
+    templateSelector.addEventListener('change', () => {
+        const previewContainer = document.getElementById('previewContainer');
+        previewContainer.classList.remove('template-standard', 'template-profesional', 'template-elegan');
+        previewContainer.classList.add(templateSelector.value);
+    });
+
     async function translateText(text) {
         if(!text) return text;
         try {
@@ -572,19 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Mock document.styleSheets to bypass html2canvas oklch parse error
         const originalStyleSheets = document.styleSheets;
-        const cvStyleSheet = Array.from(document.styleSheets).find(sheet => {
-            try {
-                const rules = sheet.cssRules || sheet.rules;
-                for (let i = 0; i < rules.length; i++) {
-                    if (rules[i].selectorText && rules[i].selectorText.includes('.cv-preview')) {
-                        return true;
-                    }
-                }
-            } catch (e) {
-                // Ignore cross-origin stylesheet errors
-            }
-            return false;
-        });
+        const cvStyleSheet = Array.from(document.styleSheets).find(sheet => sheet.ownerNode && sheet.ownerNode.id === 'cv-ats-styles');
 
         try {
             Object.defineProperty(document, 'styleSheets', {
@@ -604,7 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (prop === 'getPropertyValue') {
                         return function(propertyName) {
                             const val = target.getPropertyValue(propertyName);
-                            if (typeof val === 'string' && val.includes('oklch')) {
+                            if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
                                 if (propertyName.includes('background')) return 'rgb(255, 255, 255)';
                                 return 'rgb(0, 0, 0)';
                             }
@@ -612,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                     }
                     const val = target[prop];
-                    if (typeof val === 'string' && val.includes('oklch')) {
+                    if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
                         if (prop === 'backgroundColor') return 'rgb(255, 255, 255)';
                         if (prop.toLowerCase().includes('color')) return 'rgb(0, 0, 0)';
                         return 'rgb(0, 0, 0)';

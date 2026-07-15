@@ -109,18 +109,26 @@
                 </div>
             </a>
             
-            <nav class="flex items-center gap-2 bg-white/50 dark:bg-zinc-900/50 p-1.5 rounded-2xl border border-slate-200/60 dark:border-zinc-800/60 backdrop-blur-md">
-                <a href="{{ url('/') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+            <nav class="flex items-center gap-2 bg-white/50 dark:bg-zinc-900/50 p-1.5 rounded-2xl border border-slate-200/60 dark:border-zinc-800/60 backdrop-blur-md overflow-x-auto max-w-full">
+                <a href="{{ url('/') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
                     <i data-lucide="file-text" class="w-4 h-4"></i>
                     Analisis Teks
                 </a>
-                <a href="{{ url('/surat-lamaran') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+                <a href="{{ url('/surat-lamaran') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
                     <i data-lucide="mail" class="w-4 h-4"></i>
                     Surat Lamaran
                 </a>
-                <a href="{{ url('/cv-ats') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+                <a href="{{ url('/parafrase') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    Parafrase
+                </a>
+                <a href="{{ url('/cv-ats') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
                     <i data-lucide="briefcase" class="w-4 h-4"></i>
                     CV ATS
+                </a>
+                <a href="{{ url('/ats-checker') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    Cek ATS
                 </a>
             </nav>
 

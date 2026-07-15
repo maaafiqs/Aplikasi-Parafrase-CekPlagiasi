@@ -5,7 +5,7 @@
 @push('scripts-top')
     <!-- html2pdf.js for client-side PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
+    <style id="cover-letter-styles">
         /* A4 aspect ratio and styling for preview */
         .a4-preview {
             width: 100%;
@@ -24,6 +24,36 @@
         .dark .a4-preview {
             background: white;
             color: black;
+        }
+        
+        /* Template Styles */
+        .template-standard { font-family: 'Times New Roman', Times, serif; }
+        
+        .template-modern { 
+            font-family: 'Arial', sans-serif; 
+            color: #111827;
+        }
+        .template-modern .letter-header h1 {
+            color: #2563eb; /* Blue accent */
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .template-klasik {
+            font-family: 'Georgia', serif;
+            color: #27272a;
+        }
+        .template-klasik .letter-header {
+            text-align: center;
+            border-bottom: 1px solid #000;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+        .template-klasik .letter-header h1 {
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         
         .form-group label {
@@ -148,17 +178,27 @@
                     <i data-lucide="eye" class="w-5 h-5 text-indigo-500 dark:text-emerald-400"></i>
                     Pratinjau
                 </h2>
-                
-                <button id="btnExportPDF" class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
-                    <i data-lucide="download" class="w-4 h-4"></i>
-                    Unduh PDF
-                </button>
+                <div class="flex flex-wrap items-center gap-2">
+                    <select id="templateSelector" class="px-3 py-2 rounded-xl text-xs font-semibold bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 cursor-pointer">
+                        <option value="template-standard">Standar (Times New Roman)</option>
+                        <option value="template-modern">Modern (Arial + Aksen Biru)</option>
+                        <option value="template-klasik">Klasik (Georgia Header Tengah)</option>
+                    </select>
+                    <button id="btnReset" class="px-4 py-2.5 rounded-xl bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 font-semibold text-sm hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        Reset
+                    </button>
+                    <button id="btnExportPDF" class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold text-sm hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-lg shadow-slate-900/20 flex items-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Unduh PDF
+                    </button>
+                </div>
             </div>
 
             <!-- A4 Preview Container -->
             <div class="w-full flex justify-center bg-slate-100 dark:bg-zinc-950/50 rounded-2xl p-4 overflow-x-auto">
                 <!-- We set a fixed max-width for the preview to simulate A4, but keep it responsive -->
-                <div id="previewContainer" class="a4-preview max-w-[800px] shrink-0" style="min-width: 600px;">
+                <div id="previewContainer" class="a4-preview template-standard max-w-[800px] shrink-0" style="min-width: 600px;">
                     
                     <!-- Content injected via JS -->
                     <div id="letterContent"></div>
@@ -183,36 +223,141 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const elements = {};
+    const templateSelector = document.getElementById('templateSelector');
+
+    // Event listener for template change
+    templateSelector.addEventListener('change', () => {
+        // Remove old template classes
+        previewContainer.classList.remove('template-standard', 'template-modern', 'template-klasik');
+        // Add new template class
+        previewContainer.classList.add(templateSelector.value);
+        // Re-render
+        updatePreview();
+    });
+
+    // Event listeners
     formInputs.forEach(id => {
         elements[id] = document.getElementById(id);
     });
 
     const letterContent = document.getElementById('letterContent');
     const btnExportPDF = document.getElementById('btnExportPDF');
+    const btnReset = document.getElementById('btnReset');
     const previewContainer = document.getElementById('previewContainer');
 
+    function saveToStorage() {
+        const data = {};
+        for (const key in elements) {
+            data[key] = elements[key].value;
+        }
+        localStorage.setItem('coverLetterData', JSON.stringify(data));
+    }
+
+    function loadFromStorage() {
+        const stored = localStorage.getItem('coverLetterData');
+        if (stored) {
+            try {
+                const data = JSON.parse(stored);
+                for (const key in elements) {
+                    if (data[key] !== undefined) {
+                        elements[key].value = data[key];
+                    }
+                }
+            } catch (e) {}
+        }
+    }
+
+    // Load saved data on init
+    loadFromStorage();
+
+    // Initial render is now called explicitly here after data load
+    updatePreview();
+
+    // Listen to inputs
+    for (const key in elements) {
+        elements[key].addEventListener('input', () => {
+            saveToStorage();
+            updatePreview();
+        });
+    }
+
+    // Reset button logic
+    btnReset.addEventListener('click', () => {
+        Swal.fire({
+            title: 'Reset Form?',
+            text: 'Semua isian akan dihapus.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Reset',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                for (const key in elements) {
+                    elements[key].value = '';
+                }
+                localStorage.removeItem('coverLetterData');
+                updatePreview();
+            }
+        });
+    });
+
     function updatePreview() {
-        const name = elements.senderName.value || '[Nama Anda]';
-        const phone = elements.senderPhone.value;
-        const email = elements.senderEmail.value;
-        const address = elements.senderAddress.value;
-        const link = elements.senderLink.value;
+        const vals = {};
+        for (const key in elements) {
+            vals[key] = elements[key].value;
+        }
 
-        const date = elements.letterDate.value || '[Tanggal]';
-        const position = elements.jobPosition.value || '[Posisi]';
-        const hr = elements.hrName.value || 'Bapak/Ibu HRD';
-        const company = elements.companyName.value || '[Nama Perusahaan]';
-        const compAddress = elements.companyAddress.value || '[Alamat Perusahaan]';
-        const strength = elements.mainStrength.value || '[Jelaskan pengalaman/kekuatan Anda di sini]';
+        const name = vals.senderName || '[Nama Anda]';
+        const phone = vals.senderPhone;
+        const email = vals.senderEmail;
+        const address = vals.senderAddress;
+        const link = vals.senderLink;
 
-        // Build contact string
         let contactStr = [];
         if(phone) contactStr.push(phone);
         if(email) contactStr.push(email);
         if(address) contactStr.push(address);
         if(link) contactStr.push(link);
 
+        const date = vals.letterDate || '[Tanggal]';
+        const position = vals.jobPosition || '[Posisi]';
+        const hr = vals.hrName || 'Bapak/Ibu HRD';
+        const company = vals.companyName || '[Nama Perusahaan]';
+        const compAddress = vals.companyAddress || '[Alamat Perusahaan]';
+        const strength = vals.mainStrength || '[Jelaskan pengalaman/kekuatan Anda di sini]';
+        
+        let headerHtml = '';
+        const selectedTemplate = document.getElementById('templateSelector').value;
+        
+        if (selectedTemplate === 'template-klasik') {
+            headerHtml = `
+                <div class="letter-header">
+                    <h1 style="margin:0; font-weight:bold;">${vals.senderName || 'Nama Lengkap'}</h1>
+                    <p style="margin:5px 0 0 0; font-size:12px;">${vals.senderAddress || 'Alamat Domisili'}</p>
+                    <p style="margin:0; font-size:12px;">${vals.senderPhone || 'No. Telp'} | ${vals.senderEmail || 'Email'} ${vals.senderLink ? '| ' + vals.senderLink : ''}</p>
+                </div>
+            `;
+        } else if (selectedTemplate === 'template-modern') {
+            headerHtml = `
+                <div class="letter-header">
+                    <h1 style="margin:0; font-size:24px; font-weight:bold;">${vals.senderName || 'Nama Lengkap'}</h1>
+                    <p style="margin:5px 0 0 0;">${vals.senderAddress || 'Alamat Domisili'}</p>
+                    <p style="margin:0;">${vals.senderPhone || 'No. Telp'} | ${vals.senderEmail || 'Email'} ${vals.senderLink ? '| ' + vals.senderLink : ''}</p>
+                </div>
+            `;
+        } else {
+            // Standard
+            headerHtml = `
+                <div class="mb-6">
+                    <p style="margin:0; font-weight:bold;">${vals.senderName || 'Nama Lengkap'}</p>
+                    <p style="margin:0;">${vals.senderAddress || 'Alamat Domisili'}</p>
+                    <p style="margin:0;">${vals.senderPhone || 'No. Telp'} | ${vals.senderEmail || 'Email'} ${vals.senderLink ? '| ' + vals.senderLink : ''}</p>
+                </div>
+            `;
+        }
+
         const html = `
+            ${headerHtml}
             <div style="text-align: right; margin-bottom: 30px;">
                 <p style="margin: 0;">${date}</p>
             </div>
@@ -223,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="margin: 0;">${compAddress}</p>
             </div>
 
-            <div style="margin-bottom: 20px;">
+            <div class="mb-6" style="${selectedTemplate === 'template-klasik' ? 'text-align: left;' : ''} margin-bottom: 20px;">
                 <p style="margin: 0;"><strong>Hal: Lamaran Pekerjaan - ${position}</strong></p>
             </div>
 
@@ -253,13 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         letterContent.innerHTML = html;
     }
 
-    // Bind inputs to live preview
-    formInputs.forEach(id => {
-        elements[id].addEventListener('input', updatePreview);
-    });
-
-    // Initial render
-    updatePreview();
+    // Event listeners are bound at the top of the script
 
     // PDF Export logic
     btnExportPDF.addEventListener('click', () => {
@@ -274,19 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Mock document.styleSheets to bypass html2canvas oklch parse error
         const originalStyleSheets = document.styleSheets;
-        const letterStyleSheet = Array.from(document.styleSheets).find(sheet => {
-            try {
-                const rules = sheet.cssRules || sheet.rules;
-                for (let i = 0; i < rules.length; i++) {
-                    if (rules[i].selectorText && rules[i].selectorText.includes('.a4-preview')) {
-                        return true;
-                    }
-                }
-            } catch (e) {
-                // Ignore cross-origin stylesheet errors
-            }
-            return false;
-        });
+        const letterStyleSheet = Array.from(document.styleSheets).find(sheet => sheet.ownerNode && sheet.ownerNode.id === 'cover-letter-styles');
 
         try {
             Object.defineProperty(document, 'styleSheets', {
@@ -306,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (prop === 'getPropertyValue') {
                         return function(propertyName) {
                             const val = target.getPropertyValue(propertyName);
-                            if (typeof val === 'string' && val.includes('oklch')) {
+                            if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
                                 if (propertyName.includes('background')) return 'rgb(255, 255, 255)';
                                 return 'rgb(0, 0, 0)';
                             }
@@ -314,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                     }
                     const val = target[prop];
-                    if (typeof val === 'string' && val.includes('oklch')) {
+                    if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
                         if (prop === 'backgroundColor') return 'rgb(255, 255, 255)';
                         if (prop.toLowerCase().includes('color')) return 'rgb(0, 0, 0)';
                         return 'rgb(0, 0, 0)';

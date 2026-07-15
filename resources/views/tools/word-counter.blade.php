@@ -162,6 +162,30 @@
                     </div>
                 </div>
 
+                <!-- Readability Score Card -->
+                <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800/80 rounded-2xl p-6 shadow-sm">
+                    <h2 class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i data-lucide="activity" class="w-4 h-4 text-indigo-500 dark:text-emerald-400"></i>
+                        Skor Keterbacaan
+                    </h2>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="text-slate-100 dark:text-zinc-800" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                <path id="readabilityCircle" class="text-slate-300 dark:text-zinc-600 transition-all duration-1000 ease-out" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <span id="readabilityScoreText" class="text-lg font-black text-slate-800 dark:text-white">0</span>
+                            </div>
+                        </div>
+                        <div>
+                            <p id="readabilityLevel" class="text-sm font-bold text-slate-700 dark:text-zinc-200">Belum ada teks</p>
+                            <p id="readabilityDesc" class="text-[11px] text-slate-500 dark:text-zinc-400 mt-1">Ketik kalimat untuk mengukur tingkat kesulitan membaca (Flesch Score).</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Keyword Density Card -->
                 <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800/80 rounded-2xl p-6 shadow-sm">
                     <h2 class="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
@@ -582,6 +606,9 @@
                 const speakTimeSec = Math.round((wordCount / 130) * 60);
                 timeSpeak.textContent = formatTime(speakTimeSec);
 
+                // 6.5 Readability Score
+                analyzeReadability(text, wordCount, sentenceCount);
+
                 // 7. Character profile
                 analyzeCharacterProfile(text);
 
@@ -598,9 +625,18 @@
                 statCharsNoSp.textContent = '0';
                 statParagraphs.textContent = '0';
                 statSentences.textContent = '0';
-                
                 timeRead.textContent = '0 dtk';
                 timeSpeak.textContent = '0 dtk';
+                
+                const readLevel = document.getElementById('readabilityLevel');
+                const readDesc = document.getElementById('readabilityDesc');
+                const readScore = document.getElementById('readabilityScoreText');
+                const readCircle = document.getElementById('readabilityCircle');
+                readLevel.textContent = 'Belum ada teks';
+                readDesc.textContent = 'Ketik kalimat untuk mengukur tingkat kesulitan membaca (Flesch Score).';
+                readScore.textContent = '0';
+                readCircle.setAttribute('stroke-dasharray', '0, 100');
+                readCircle.setAttribute('class', 'text-slate-300 dark:text-zinc-600 transition-all duration-1000 ease-out');
                 
                 vowelPercent.textContent = '0%';
                 vowelBar.style.width = '0%';
@@ -636,6 +672,50 @@
                 `;
 
                 lucide.createIcons();
+            }
+
+            function analyzeReadability(text, words, sentences) {
+                const readLevel = document.getElementById('readabilityLevel');
+                const readDesc = document.getElementById('readabilityDesc');
+                const readScoreText = document.getElementById('readabilityScoreText');
+                const readCircle = document.getElementById('readabilityCircle');
+
+                if (words === 0 || sentences === 0) {
+                    return;
+                }
+
+                // Estimate syllables by counting vowel groups
+                const syllables = text.toLowerCase().match(/[aiueo]+/g);
+                const syllableCount = syllables ? syllables.length : 0;
+
+                // Flesch Reading Ease formula
+                let score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllableCount / words);
+                score = Math.max(0, Math.min(100, Math.round(score)));
+
+                readScoreText.textContent = score;
+                readCircle.setAttribute('stroke-dasharray', `${score}, 100`);
+
+                if (score >= 80) {
+                    readCircle.setAttribute('class', 'text-emerald-500 transition-all duration-1000 ease-out');
+                    readLevel.textContent = 'Sangat Mudah';
+                    readLevel.className = 'text-sm font-bold text-emerald-600 dark:text-emerald-400';
+                    readDesc.textContent = 'Mudah dipahami oleh rata-rata orang / siswa.';
+                } else if (score >= 60) {
+                    readCircle.setAttribute('class', 'text-indigo-500 transition-all duration-1000 ease-out');
+                    readLevel.textContent = 'Standar';
+                    readLevel.className = 'text-sm font-bold text-indigo-600 dark:text-indigo-400';
+                    readDesc.textContent = 'Mudah dibaca oleh kebanyakan orang dewasa.';
+                } else if (score >= 30) {
+                    readCircle.setAttribute('class', 'text-amber-500 transition-all duration-1000 ease-out');
+                    readLevel.textContent = 'Cukup Sulit';
+                    readLevel.className = 'text-sm font-bold text-amber-600 dark:text-amber-400';
+                    readDesc.textContent = 'Kalimat agak kompleks, butuh konsentrasi.';
+                } else {
+                    readCircle.setAttribute('class', 'text-rose-500 transition-all duration-1000 ease-out');
+                    readLevel.textContent = 'Sangat Sulit';
+                    readLevel.className = 'text-sm font-bold text-rose-600 dark:text-rose-400';
+                    readDesc.textContent = 'Sulit dipahami. Cocok untuk jurnal akademis.';
+                }
             }
 
             function formatNumber(num) {

@@ -14,6 +14,14 @@ Route::get('/cv-ats', function () {
     return view('tools.cv-ats');
 });
 
+Route::get('/parafrase', function () {
+    return view('tools.paraphrase');
+});
+
+Route::get('/ats-checker', function () {
+    return view('tools.ats-checker');
+});
+
 Route::post('/api/translate', function (\Illuminate\Http\Request $request) {
     $text = $request->input('text');
     $lang = $request->input('lang', 'en'); // target language
@@ -23,7 +31,7 @@ Route::post('/api/translate', function (\Illuminate\Http\Request $request) {
     try {
         $response = \Illuminate\Support\Facades\Http::get('https://translate.googleapis.com/translate_a/single', [
             'client' => 'gtx',
-            'sl' => 'id',
+            'sl' => $request->input('sl', 'id'),
             'tl' => $lang,
             'dt' => 't',
             'q' => $text
