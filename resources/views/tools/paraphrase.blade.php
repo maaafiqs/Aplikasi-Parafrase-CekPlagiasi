@@ -41,16 +41,16 @@
         <p class="text-slate-500 dark:text-zinc-400 text-sm">Tulis ulang kalimat atau paragraf Anda untuk menghindari plagiarisme dan membuat struktur bahasa yang lebih natural.</p>
         
         <!-- Paraphrase Mode Selector -->
-        <div class="mt-4 inline-flex p-1 bg-slate-100 dark:bg-zinc-800/80 rounded-2xl border border-slate-200/80 dark:border-zinc-700/60 gap-1 text-xs font-semibold">
-            <button type="button" data-mode="standard" class="mode-pill active px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center gap-1.5 text-slate-600 dark:text-zinc-300">
+        <div class="mt-4 flex flex-wrap justify-center p-1 bg-slate-100 dark:bg-zinc-800/80 rounded-2xl border border-slate-200/80 dark:border-zinc-700/60 gap-1 text-xs font-semibold max-w-full">
+            <button type="button" data-mode="standard" class="mode-pill active px-3 sm:px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center justify-center gap-1.5 text-slate-600 dark:text-zinc-300 flex-grow sm:flex-grow-0 cursor-pointer">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                 Standar (Sinonim)
             </button>
-            <button type="button" data-mode="creative" class="mode-pill px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center gap-1.5 text-slate-600 dark:text-zinc-300">
+            <button type="button" data-mode="creative" class="mode-pill px-3 sm:px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center justify-center gap-1.5 text-slate-600 dark:text-zinc-300 flex-grow sm:flex-grow-0 cursor-pointer">
                 <i data-lucide="shuffle" class="w-3.5 h-3.5"></i>
                 Kreatif (Alih Bahasa)
             </button>
-            <button type="button" data-mode="maximum" class="mode-pill px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center gap-1.5 text-slate-600 dark:text-zinc-300">
+            <button type="button" data-mode="maximum" class="mode-pill px-3 sm:px-3.5 py-1.5 rounded-xl border border-transparent transition-all flex items-center justify-center gap-1.5 text-slate-600 dark:text-zinc-300 flex-grow sm:flex-grow-0 cursor-pointer">
                 <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                 Maksimal (Kombinasi)
             </button>

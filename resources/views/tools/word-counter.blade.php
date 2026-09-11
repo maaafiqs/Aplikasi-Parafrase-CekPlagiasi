@@ -15,18 +15,18 @@
             <div class="lg:col-span-8 space-y-6">
                 
                 <!-- Uploader & File Dropzone -->
-                <div id="dropzone" class="border-2 border-dashed border-slate-200 dark:border-zinc-800 hover:border-indigo-400 dark:hover:border-emerald-500/50 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 shadow-sm relative overflow-hidden group">
+                <div id="dropzone" class="border-2 border-dashed border-slate-200 dark:border-zinc-800 hover:border-indigo-400 dark:hover:border-emerald-500/50 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-2xl p-5 sm:p-8 text-center cursor-pointer transition-all duration-300 shadow-sm relative overflow-hidden group">
                     <input type="file" id="fileInput" accept=".docx,.txt" class="hidden" />
                     
                     <div class="flex flex-col items-center gap-3 relative z-10">
-                        <div class="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <i data-lucide="cloud-upload" class="w-8 h-8"></i>
+                        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="cloud-upload" class="w-6 h-6 sm:w-8 sm:h-8"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-semibold text-slate-800 dark:text-zinc-100">
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-zinc-100">
                                 Seret & Lepaskan berkas di sini atau <span class="text-indigo-600 dark:text-emerald-400 underline decoration-2 underline-offset-2">Pilih Berkas</span>
                             </p>
-                            <p class="text-xs text-slate-400 dark:text-zinc-500 mt-1">
+                            <p class="text-[11px] sm:text-xs text-slate-400 dark:text-zinc-500 mt-1">
                                 Mendukung format dokumen Word (<span class="font-medium text-slate-500 dark:text-zinc-400">.docx</span>) atau Teks Biasa (<span class="font-medium text-slate-500 dark:text-zinc-400">.txt</span>)
                             </p>
                         </div>
@@ -37,23 +37,23 @@
                 </div>
 
                 <!-- Text Area Editor -->
-                <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800/80 rounded-2xl p-5 shadow-sm space-y-4">
-                    <div class="flex justify-between items-center">
+                <div class="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800/80 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
+                    <div class="flex flex-wrap justify-between items-center gap-2">
                         <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-zinc-500">
                             <i data-lucide="file-text" class="w-4 h-4"></i>
                             <span>Editor Teks</span>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
                             <!-- Quick action buttons -->
-                            <button id="btnCopy" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-zinc-400 bg-slate-50 dark:bg-zinc-800/60 hover:bg-indigo-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-emerald-400 border border-transparent transition-all">
+                            <button id="btnCopy" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-zinc-400 bg-slate-50 dark:bg-zinc-800/60 hover:bg-indigo-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-emerald-400 border border-transparent transition-all cursor-pointer">
                                 <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                                 Salin
                             </button>
-                            <button id="btnDownload" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-zinc-400 bg-slate-50 dark:bg-zinc-800/60 hover:bg-indigo-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-emerald-400 border border-transparent transition-all">
+                            <button id="btnDownload" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-zinc-400 bg-slate-50 dark:bg-zinc-800/60 hover:bg-indigo-50 dark:hover:bg-zinc-800 hover:text-indigo-600 dark:hover:text-emerald-400 border border-transparent transition-all cursor-pointer">
                                 <i data-lucide="download" class="w-3.5 h-3.5"></i>
                                 Ekspor (.txt)
                             </button>
-                            <button id="btnClear" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-red-600 dark:text-rose-400 bg-red-50 dark:bg-rose-950/20 hover:bg-red-100 dark:hover:bg-rose-950/40 border border-transparent transition-all">
+                            <button id="btnClear" class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium text-red-600 dark:text-rose-400 bg-red-50 dark:bg-rose-950/20 hover:bg-red-100 dark:hover:bg-rose-950/40 border border-transparent transition-all cursor-pointer">
                                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                 Bersihkan
                             </button>
@@ -61,31 +61,31 @@
                     </div>
                     
                     <div class="relative">
-                        <textarea id="textEditor" spellcheck="false" class="w-full min-h-[300px] p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-emerald-500/50 rounded-xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 dark:focus:ring-emerald-500/5 transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-y" placeholder="Mulai mengetik di sini, atau upload dokumen Word Anda di atas..."></textarea>
+                        <textarea id="textEditor" spellcheck="false" class="w-full min-h-[260px] sm:min-h-[300px] p-3.5 sm:p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-emerald-500/50 rounded-xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 dark:focus:ring-emerald-500/5 transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-y" placeholder="Mulai mengetik di sini, atau upload dokumen Word Anda di atas..."></textarea>
                     </div>
                 </div>
 
                 <!-- Core Stats Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
-                        <p class="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Kata</p>
-                        <p id="statWords" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-2.5 sm:gap-4">
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-3 sm:p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Kata</p>
+                        <p id="statWords" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
-                        <p class="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Karakter</p>
-                        <p id="statChars" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-3 sm:p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Karakter</p>
+                        <p id="statChars" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
-                        <p class="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Tanpa Spasi</p>
-                        <p id="statCharsNoSp" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-3 sm:p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Tanpa Spasi</p>
+                        <p id="statCharsNoSp" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
-                        <p class="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Paragraf</p>
-                        <p id="statParagraphs" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-3 sm:p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200">
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Paragraf</p>
+                        <p id="statParagraphs" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
                     </div>
-                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200 col-span-2 md:col-span-1">
-                        <p class="text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Kalimat</p>
-                        <p id="statSentences" class="text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
+                    <div class="bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800/50 p-3 sm:p-4 rounded-xl shadow-sm text-center hover:translate-y-[-2px] transition-transform duration-200 col-span-2 md:col-span-1">
+                        <p class="text-[11px] sm:text-xs font-medium text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">Kalimat</p>
+                        <p id="statSentences" class="text-xl sm:text-2xl font-extrabold text-slate-800 dark:text-white">0</p>
                     </div>
                 </div>
 

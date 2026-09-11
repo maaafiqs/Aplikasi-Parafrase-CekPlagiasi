@@ -95,96 +95,102 @@
     <div class="absolute top-1/3 right-0 w-[400px] h-[400px] bg-emerald-500/10 dark:bg-emerald-600/5 rounded-full blur-[100px] pointer-events-none translate-x-1/2"></div>
     <div class="absolute bottom-0 left-1/3 w-[600px] h-[600px] bg-violet-500/10 dark:bg-violet-600/5 rounded-full blur-[150px] pointer-events-none translate-y-1/3"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 flex flex-col min-h-screen justify-between">
+    <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 relative z-10 flex flex-col min-h-screen justify-between">
         
         <!-- Header Section -->
-        <header class="relative z-50 flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-200/60 dark:border-zinc-800/60 pb-6 gap-4">
-            <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                    <img src="{{ asset('images/TulCek Blue.png') }}" alt="TulCek Logo" class="w-10 h-10 object-contain dark:hidden">
-                    <img src="{{ asset('images/TulCek White.png') }}" alt="TulCek Logo" class="w-10 h-10 object-contain hidden dark:block">
+        <header class="relative z-50 flex items-center justify-between mb-6 sm:mb-8 border-b border-slate-200/60 dark:border-zinc-800/60 pb-4 sm:pb-6 gap-2 sm:gap-4">
+            <a href="{{ url('/') }}" class="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/TulCek Blue.png') }}" alt="TulCek Logo" class="w-9 h-9 sm:w-10 sm:h-10 object-contain dark:hidden">
+                    <img src="{{ asset('images/TulCek White.png') }}" alt="TulCek Logo" class="w-9 h-9 sm:w-10 sm:h-10 object-contain hidden dark:block">
                 </div>
-                <div>
-                    <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                        TulCek
-                        <span class="text-xs font-medium text-slate-400 dark:text-zinc-500 hidden sm:inline">(Tulis dan Cek)</span>
-                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.4</button>
-                    </h1>
-                    <p class="text-xs text-slate-500 dark:text-zinc-400">Toolkit Profesional Karir & Teks</p>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <span class="text-base sm:text-xl font-bold tracking-tight text-slate-900 dark:text-white">TulCek</span>
+                        <span class="text-xs font-medium text-slate-400 dark:text-zinc-500 hidden md:inline">(Tulis dan Cek)</span>
+                        <button type="button" id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-1.5 sm:px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5 flex-shrink-0">v1.4</button>
+                    </div>
+                    <p class="text-[10px] sm:text-xs text-slate-500 dark:text-zinc-400 truncate">Toolkit Profesional Karir & Teks</p>
                 </div>
             </a>
             
-            <!-- Navbar Menu with Dropdown -->
-            <div class="relative ml-auto md:ml-0" id="navDropdownContainer">
-                <button id="navDropdownBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/60 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all shadow-sm">
-                    <i data-lucide="layout-grid" class="w-4 h-4 text-indigo-500 dark:text-emerald-400"></i>
-                    Menu Alat
-                    <i data-lucide="chevron-down" class="w-4 h-4 ml-1 opacity-50"></i>
-                </button>
-                
-                <nav id="navMenu" class="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden hidden flex-col z-50 p-2">
-                    <a href="{{ url('/') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="file-text" class="w-4 h-4"></i>
-                        Analisis Teks
-                    </a>
-                    <a href="{{ url('/surat-lamaran') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                        Surat Lamaran
-                    </a>
-                    <a href="{{ url('/parafrase') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="repeat" class="w-4 h-4"></i>
-                        Parafrase Teks
-                    </a>
-                    <a href="{{ url('/cv-ats') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="user-check" class="w-4 h-4"></i>
-                        Buat CV ATS
-                    </a>
-                    <a href="{{ url('/ats-checker') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        ATS Checker
-                    </a>
-
-                    <!-- Coming Soon Menu -->
-                    <div class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between gap-2 transition-all text-slate-400 dark:text-zinc-500 cursor-not-allowed opacity-80 bg-slate-50/50 dark:bg-zinc-900/30" title="Fitur sedang dalam tahap pengembangan">
-                        <div class="flex items-center gap-2">
-                            <i data-lucide="shield-alert" class="w-4 h-4"></i>
-                            Cek Plagiasi
-                        </div>
-                        <span class="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider">Segera</span>
-                    </div>
-                    
-                    <div class="h-px bg-slate-100 dark:bg-zinc-800 my-1"></div>
-                    <button id="btnChangelogMenu" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50">
-                        <i data-lucide="history" class="w-4 h-4"></i>
-                        Riwayat Versi (v1.4)
+            <!-- Navbar Controls (Menu Alat & Theme Toggle unified) -->
+            <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                <!-- Dropdown Menu -->
+                <div class="relative" id="navDropdownContainer">
+                    <button type="button" id="navDropdownBtn" class="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/60 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all shadow-sm active:scale-95 cursor-pointer">
+                        <i data-lucide="layout-grid" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500 dark:text-emerald-400"></i>
+                        <span>Menu Alat</span>
+                        <i id="navChevron" data-lucide="chevron-down" class="w-3.5 h-3.5 sm:w-4 sm:h-4 opacity-50 transition-transform duration-200"></i>
                     </button>
-                </nav>
-            </div>
+                    
+                    <nav id="navMenu" class="absolute top-full right-0 mt-2 w-56 sm:w-60 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden hidden flex-col z-50 p-2">
+                        <a href="{{ url('/') }}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            Analisis Teks
+                        </a>
+                        <a href="{{ url('/surat-lamaran') }}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            Surat Lamaran
+                        </a>
+                        <a href="{{ url('/parafrase') }}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                            <i data-lucide="repeat" class="w-4 h-4"></i>
+                            Parafrase Teks
+                        </a>
+                        <a href="{{ url('/cv-ats') }}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                            <i data-lucide="user-check" class="w-4 h-4"></i>
+                            Buat CV ATS
+                        </a>
+                        <a href="{{ url('/ats-checker') }}" class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                            <i data-lucide="check-circle" class="w-4 h-4"></i>
+                            ATS Checker
+                        </a>
 
-            <div class="flex items-center gap-4">
+                        <!-- Coming Soon Menu -->
+                        <div class="px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between gap-2 transition-all text-slate-400 dark:text-zinc-500 cursor-not-allowed opacity-80 bg-slate-50/50 dark:bg-zinc-900/30" title="Fitur sedang dalam tahap pengembangan">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                                Cek Plagiasi
+                            </div>
+                            <span class="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider">Segera</span>
+                        </div>
+                        
+                        <div class="h-px bg-slate-100 dark:bg-zinc-800 my-1"></div>
+                        <button type="button" id="btnChangelogMenu" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-all text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50 cursor-pointer">
+                            <i data-lucide="history" class="w-4 h-4"></i>
+                            Riwayat Versi (v1.4)
+                        </button>
+                    </nav>
+                </div>
+
                 <!-- Theme Toggle Button -->
-                <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 hover:text-indigo-500 dark:hover:text-emerald-400 hover:border-indigo-200 dark:hover:border-zinc-700 transition-all shadow-sm flex items-center justify-center">
-                    <i id="themeIcon" data-lucide="sun" class="w-5 h-5"></i>
+                <button type="button" id="themeToggle" aria-label="Ganti Tema" class="p-2 sm:p-2.5 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-400 hover:text-indigo-500 dark:hover:text-emerald-400 hover:border-indigo-200 dark:hover:border-zinc-700 transition-all shadow-sm flex items-center justify-center active:scale-95 cursor-pointer">
+                    <i id="themeIcon" data-lucide="sun" class="w-4.5 h-4.5 sm:w-5 sm:w-5"></i>
                 </button>
             </div>
         </header>
 
         <!-- Dukungan Saweria Card -->
-        <div class="mb-10 p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 dark:from-amber-500/15 dark:via-orange-500/10 dark:to-transparent border border-amber-500/20 dark:border-amber-500/20 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm relative overflow-hidden backdrop-blur-sm">
+        <div id="saweriaCard" class="mb-6 sm:mb-8 p-3.5 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 dark:from-amber-500/15 dark:via-orange-500/10 dark:to-transparent border border-amber-500/20 dark:border-amber-500/20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 shadow-sm relative overflow-hidden backdrop-blur-sm transition-all duration-300">
             <div class="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 dark:bg-amber-500/5 rounded-full blur-[50px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
             
-            <div class="relative z-10 text-center md:text-left flex-1">
-                <h3 class="text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center gap-2 justify-center md:justify-start mb-1">
-                    <i data-lucide="heart" class="w-4 h-4 text-rose-500 dark:text-rose-400 fill-rose-500/20 dark:fill-rose-400/20 animate-pulse"></i>
+            <!-- Dismiss Button -->
+            <button type="button" id="btnDismissSaweria" aria-label="Tutup pesan donasi" class="absolute top-2.5 right-2.5 p-1 rounded-lg text-amber-800/50 dark:text-amber-400/50 hover:text-amber-900 dark:hover:text-amber-300 hover:bg-amber-500/10 transition-colors z-20 cursor-pointer" title="Sembunyikan pesan">
+                <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+
+            <div class="relative z-10 text-left flex-1 pr-6 md:pr-0">
+                <h3 class="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center gap-1.5 sm:gap-2 mb-1">
+                    <i data-lucide="heart" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-500 dark:text-rose-400 fill-rose-500/20 dark:fill-rose-400/20 animate-pulse"></i>
                     Aplikasi ini bermanfaat untuk Anda?
                 </h3>
-                <p class="text-[13px] text-slate-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
+                <p class="text-[11px] sm:text-[13px] text-slate-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
                     Dukung pengembangan TulCek agar terus menjadi platform <span class="font-semibold text-slate-700 dark:text-zinc-300">gratis, super cepat,</span> dan <span class="font-semibold text-slate-700 dark:text-zinc-300">100% bebas iklan</span>. Setiap kopi dari Anda adalah energi bagi kami! 🚀
                 </p>
             </div>
             
-            <a href="https://saweria.co/maaafiqs" target="_blank" rel="noopener noreferrer" class="relative z-10 flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#FFC000] to-[#F2B600] text-amber-950 font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-95 flex-shrink-0 border border-amber-400/50">
-                <i data-lucide="coffee" class="w-4.5 h-4.5"></i>
+            <a href="https://saweria.co/maaafiqs" target="_blank" rel="noopener noreferrer" class="relative z-10 flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 bg-gradient-to-r from-[#FFC000] to-[#F2B600] text-amber-950 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 hover:scale-[1.01] active:scale-95 flex-shrink-0 border border-amber-400/50 w-full md:w-auto">
+                <i data-lucide="coffee" class="w-4 h-4"></i>
                 <span class="tracking-wide">Dukung via Saweria</span>
             </a>
         </div>
@@ -195,12 +201,12 @@
         </main>
 
         <!-- Footer Section -->
-        <footer class="mt-16 pt-8 pb-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col gap-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 text-center md:text-left">
+        <footer class="mt-12 sm:mt-16 pt-6 sm:pt-8 pb-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col gap-4 sm:gap-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 text-center md:text-left">
                 <p>
                     © {{ date('Y') }} TulCek (Tulis dan Cek). Website ini dikelola oleh <a href="https://maaafiqs.web.id" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 font-semibold transition-colors">Maaafiqs Dev</a>.
                 </p>
-                <div class="flex gap-4 opacity-70 justify-center">
+                <div class="flex flex-wrap gap-2 sm:gap-4 opacity-70 justify-center">
                     <span>Toolkit Karir Profesional</span>
                     <span>•</span>
                     <span>Client-Side Processing</span>
@@ -222,21 +228,48 @@
             const themeIcon = document.getElementById('themeIcon');
             const navDropdownBtn = document.getElementById('navDropdownBtn');
             const navMenu = document.getElementById('navMenu');
+            const navChevron = document.getElementById('navChevron');
             const btnChangelog = document.getElementById('btnChangelog');
             const btnChangelogMenu = document.getElementById('btnChangelogMenu');
+            const saweriaCard = document.getElementById('saweriaCard');
+            const btnDismissSaweria = document.getElementById('btnDismissSaweria');
 
-            // Dropdown Menu Logic
+            // Saweria Dismiss Logic
+            if(saweriaCard && btnDismissSaweria) {
+                if(sessionStorage.getItem('saweria_dismissed') === 'true') {
+                    saweriaCard.style.display = 'none';
+                }
+                btnDismissSaweria.addEventListener('click', () => {
+                    saweriaCard.style.opacity = '0';
+                    saweriaCard.style.transform = 'translateY(-6px)';
+                    setTimeout(() => {
+                        saweriaCard.style.display = 'none';
+                    }, 200);
+                    sessionStorage.setItem('saweria_dismissed', 'true');
+                });
+            }
+
+            // Dropdown Menu Logic with Chevron Animation
             if(navDropdownBtn && navMenu) {
                 navDropdownBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    navMenu.classList.toggle('hidden');
-                    navMenu.classList.toggle('flex');
+                    const isOpen = !navMenu.classList.contains('hidden');
+                    if (isOpen) {
+                        navMenu.classList.add('hidden');
+                        navMenu.classList.remove('flex');
+                        if(navChevron) navChevron.classList.remove('rotate-180');
+                    } else {
+                        navMenu.classList.remove('hidden');
+                        navMenu.classList.add('flex');
+                        if(navChevron) navChevron.classList.add('rotate-180');
+                    }
                 });
                 
                 document.addEventListener('click', (e) => {
                     if (!navMenu.contains(e.target) && !navDropdownBtn.contains(e.target)) {
                         navMenu.classList.add('hidden');
                         navMenu.classList.remove('flex');
+                        if(navChevron) navChevron.classList.remove('rotate-180');
                     }
                 });
             }
@@ -246,6 +279,7 @@
                 if (navMenu) {
                     navMenu.classList.add('hidden');
                     navMenu.classList.remove('flex');
+                    if(navChevron) navChevron.classList.remove('rotate-180');
                 }
                 Swal.fire({
                     title: 'Tentang & Riwayat Versi',
