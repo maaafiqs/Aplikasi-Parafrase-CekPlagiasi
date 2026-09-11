@@ -2,11 +2,14 @@
 
 // Set environment defaults for Vercel Serverless
 $appKey = getenv('APP_KEY') ?: ($_ENV['APP_KEY'] ?? 'base64:z8LAlxHo9ufEoZgYKyVry1VLBuPvP2h9fWycX6sKm9U=');
+$appDebug = getenv('APP_DEBUG') ?: ($_ENV['APP_DEBUG'] ?? 'true');
+$appUrl = getenv('APP_URL') ?: ($_ENV['APP_URL'] ?? 'https://tulcek-app.vercel.app');
 
 putenv('VERCEL=1');
 putenv("APP_KEY={$appKey}");
+putenv("APP_DEBUG={$appDebug}");
+putenv("APP_URL={$appUrl}");
 putenv('APP_ENV=production');
-putenv('APP_DEBUG=false');
 putenv('SESSION_DRIVER=array');
 putenv('CACHE_STORE=array');
 putenv('CACHE_DRIVER=array');
@@ -16,8 +19,9 @@ putenv('VIEW_COMPILED_PATH=/tmp/views');
 
 $_ENV['VERCEL'] = '1';
 $_ENV['APP_KEY'] = $appKey;
+$_ENV['APP_DEBUG'] = $appDebug;
+$_ENV['APP_URL'] = $appUrl;
 $_ENV['APP_ENV'] = 'production';
-$_ENV['APP_DEBUG'] = 'false';
 $_ENV['SESSION_DRIVER'] = 'array';
 $_ENV['CACHE_STORE'] = 'array';
 $_ENV['CACHE_DRIVER'] = 'array';
@@ -27,6 +31,7 @@ $_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
 
 $_SERVER['VERCEL'] = '1';
 $_SERVER['APP_KEY'] = $appKey;
+$_SERVER['APP_DEBUG'] = $appDebug;
 $_SERVER['SESSION_DRIVER'] = 'array';
 $_SERVER['LOG_CHANNEL'] = 'stderr';
 
