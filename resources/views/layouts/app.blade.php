@@ -108,7 +108,7 @@
                     <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
                         TulCek
                         <span class="text-xs font-medium text-slate-400 dark:text-zinc-500 hidden sm:inline">(Tulis dan Cek)</span>
-                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.3</button>
+                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.4</button>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-zinc-400">Toolkit Profesional Karir & Teks</p>
                 </div>
@@ -132,16 +132,16 @@
                         Surat Lamaran
                     </a>
                     <a href="{{ url('/parafrase') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                        Parafrase
+                        <i data-lucide="repeat" class="w-4 h-4"></i>
+                        Parafrase Teks
                     </a>
                     <a href="{{ url('/cv-ats') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
-                        <i data-lucide="briefcase" class="w-4 h-4"></i>
-                        CV ATS
+                        <i data-lucide="user-check" class="w-4 h-4"></i>
+                        Buat CV ATS
                     </a>
                     <a href="{{ url('/ats-checker') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
                         <i data-lucide="check-circle" class="w-4 h-4"></i>
-                        Cek ATS
+                        ATS Checker
                     </a>
 
                     <!-- Coming Soon Menu -->
@@ -153,10 +153,10 @@
                         <span class="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider">Segera</span>
                     </div>
                     
-                    <div class="h-px bg-slate-200 dark:bg-zinc-800 my-1 mx-2"></div>
+                    <div class="h-px bg-slate-100 dark:bg-zinc-800 my-1"></div>
                     <button id="btnChangelogMenu" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50">
-                        <i data-lucide="info" class="w-4 h-4"></i>
-                        Tentang & Versi
+                        <i data-lucide="history" class="w-4 h-4"></i>
+                        Riwayat Versi (v1.4)
                     </button>
                 </nav>
             </div>
@@ -169,8 +169,8 @@
             </div>
         </header>
 
-        <!-- Global Support / Donation Banner -->
-        <div class="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 flex flex-col md:flex-row justify-between items-center gap-5 group shadow-sm transition-all hover:shadow-md">
+        <!-- Dukungan Saweria Card -->
+        <div class="mb-10 p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 dark:from-amber-500/15 dark:via-orange-500/10 dark:to-transparent border border-amber-500/20 dark:border-amber-500/20 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm relative overflow-hidden backdrop-blur-sm">
             <div class="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 dark:bg-amber-500/5 rounded-full blur-[50px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
             
             <div class="relative z-10 text-center md:text-left flex-1">
@@ -250,24 +250,43 @@
                 Swal.fire({
                     title: 'Tentang & Riwayat Versi',
                     html: `
-                        <div class="text-left text-sm space-y-4 mt-2">
+                        <div class="text-left text-sm space-y-4 mt-2 max-h-[65vh] overflow-y-auto pr-1">
                             <div class="text-center mb-4 text-slate-600 dark:text-zinc-400 text-xs">
                                 TulCek (Tulis dan Cek) dikembangkan dengan ❤ untuk membantu Anda dalam penulisan dan urusan karir. <br/>
                                 <span class="font-semibold text-slate-700 dark:text-zinc-300 mt-1 block">Dikembangkan oleh Maaafiqs Dev</span>
                             </div>
+                            
+                            <!-- Versi 1.4 -->
                             <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30">
                                 <div class="flex items-center gap-2 mb-2">
                                     <i data-lucide="sparkles" class="w-4 h-4 text-emerald-500"></i>
-                                    <span class="font-bold text-emerald-700 dark:text-emerald-400">Versi 1.3 (Saat Ini)</span>
+                                    <span class="font-bold text-emerald-700 dark:text-emerald-400">Versi 1.4 (Saat Ini)</span>
+                                    <span class="ml-auto text-xs text-slate-400 dark:text-zinc-500">11 September 2026</span>
+                                </div>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                    <li><strong>Logo Resmi Baru & Tema Adaptif</strong>: Implementasi logo TulCek Blue (Light Mode) & TulCek White (Dark Mode) yang beralih otomatis, beserta ikon Favicon tab browser.</li>
+                                    <li><strong>Deployment Cloud Serverless di Vercel</strong>: Optimalisasi produksi serverless di Vercel (PHP 8.3 & Laravel), penanganan rute statis gambar, optimasi bundle Vite, dan CSRF exemption untuk API.</li>
+                                    <li><strong>Smart Paraphrasing Tool</strong>: Alat parafrase cerdas anti-plagiarisme dengan perbendaharaan sinonim bahasa Indonesia & multi-tier back-translation.</li>
+                                    <li><strong>ATS Resume Checker & Job Matcher</strong>: Fitur pencocokan CV dengan Job Description lowongan, visualisasi skor kecocokan (%), dan analisis keyword gap.</li>
+                                    <li><strong>Rebranding Identitas TulCek</strong>: Transformasi brand menjadi "TulCek (Tulis dan Cek) — Toolkit Profesional Karir & Teks".</li>
+                                </ul>
+                            </div>
+
+                            <!-- Versi 1.3 -->
+                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.3</span>
                                     <span class="ml-auto text-xs text-slate-400 dark:text-zinc-500">6 Agustus 2026</span>
                                 </div>
                                 <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
                                     <li>Perbaikan ekspor PDF Surat Lamaran: isi tidak lagi kosong atau terpotong ke halaman kedua.</li>
-                                    <li>Ganti engine ekspor PDF dari <em>html2canvas</em> (lambat & sering hang) ke sistem <em>print popup window</em> berbasis browser — instan dan kualitas teks vektor.</li>
+                                    <li>Ganti engine ekspor PDF dari <em>html2canvas</em> ke sistem <em>print popup window</em> berbasis browser — instan & kualitas teks tajam vektor.</li>
                                     <li>Menghilangkan header/footer bawaan browser (tanggal, URL, nomor halaman) pada hasil PDF.</li>
                                     <li>Preview Surat Lamaran kini menampilkan konten penuh tanpa terpotong.</li>
                                 </ul>
                             </div>
+
+                            <!-- Versi 1.2 -->
                             <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
                                 <div class="flex items-center gap-2 mb-2">
                                     <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.2</span>
@@ -280,6 +299,8 @@
                                     <li>Penonaktifan native spellchecker yang memberatkan browser.</li>
                                 </ul>
                             </div>
+
+                            <!-- Versi 1.1 -->
                             <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
                                 <div class="flex items-center gap-2 mb-2">
                                     <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.1</span>
@@ -290,6 +311,8 @@
                                     <li>Penyempurnaan warna tema (Dark Mode) yang lebih redup.</li>
                                 </ul>
                             </div>
+
+                            <!-- Versi 1.0 -->
                             <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
                                 <div class="flex items-center gap-2 mb-2">
                                     <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.0</span>
