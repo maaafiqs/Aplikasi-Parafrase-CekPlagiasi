@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pembuat Surat Lamaran - PenaHitung')
+@section('title', 'Pembuat Surat Lamaran — TulCek (Tulis dan Cek)')
 
 @push('scripts-top')
     <style id="cover-letter-styles">

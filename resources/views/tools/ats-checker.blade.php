@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cek Skor ATS & Job Matcher - PenaHitung')
+@section('title', 'Cek Skor ATS & Job Matcher — TulCek (Tulis dan Cek)')
 
 @section('content')
 <div class="space-y-8">

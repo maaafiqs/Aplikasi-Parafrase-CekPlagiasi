@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Editor CV ATS - PenaHitung')
+@section('title', 'Editor CV ATS — TulCek (Tulis dan Cek)')
 
 @push('scripts-top')
     <style id="cv-ats-styles">

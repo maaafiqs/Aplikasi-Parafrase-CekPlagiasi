@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PenaHitung — Cek Kata, Paragraf & Dokumen Word')
+@section('title', 'TulCek (Tulis dan Cek) — Analisis Teks & Dokumen Word')
 
 @push('scripts-top')
     <!-- External Libraries for Document Processing -->
@@ -1283,7 +1283,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'penahitung-export.txt';
+                a.download = 'tulcek-export.txt';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -1292,7 +1292,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil Mengekspor!',
-                    text: 'Teks diunduh sebagai penahitung-export.txt.',
+                    text: 'Teks diunduh sebagai tulcek-export.txt.',
                     timer: 1500,
                     showConfirmButton: false,
                 });

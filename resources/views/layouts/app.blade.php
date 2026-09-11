@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'TulisRapi — Cek Kata, Paragraf & Dokumen Word')</title>
+    <title>@yield('title', 'TulCek (Tulis dan Cek) — Toolkit Profesional Karir & Teks')</title>
     
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,8 +102,9 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                        TulisRapi
-                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.2</button>
+                        TulCek
+                        <span class="text-xs font-medium text-slate-400 dark:text-zinc-500 hidden sm:inline">(Tulis dan Cek)</span>
+                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.3</button>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-zinc-400">Toolkit Profesional Karir & Teks</p>
                 </div>
@@ -174,7 +175,7 @@
                     Aplikasi ini bermanfaat untuk Anda?
                 </h3>
                 <p class="text-[13px] text-slate-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
-                    Dukung pengembangan TulisRapi agar terus menjadi platform <span class="font-semibold text-slate-700 dark:text-zinc-300">gratis, super cepat,</span> dan <span class="font-semibold text-slate-700 dark:text-zinc-300">100% bebas iklan</span>. Setiap kopi dari Anda adalah energi bagi kami! 🚀
+                    Dukung pengembangan TulCek agar terus menjadi platform <span class="font-semibold text-slate-700 dark:text-zinc-300">gratis, super cepat,</span> dan <span class="font-semibold text-slate-700 dark:text-zinc-300">100% bebas iklan</span>. Setiap kopi dari Anda adalah energi bagi kami! 🚀
                 </p>
             </div>
             
@@ -193,7 +194,7 @@
         <footer class="mt-16 pt-8 pb-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col gap-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 text-center md:text-left">
                 <p>
-                    © {{ date('Y') }} TulisRapi. Website ini dikelola oleh <a href="https://maaafiqs.web.id" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 font-semibold transition-colors">Maaafiqs Dev</a>.
+                    © {{ date('Y') }} TulCek (Tulis dan Cek). Website ini dikelola oleh <a href="https://maaafiqs.web.id" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 font-semibold transition-colors">Maaafiqs Dev</a>.
                 </p>
                 <div class="flex gap-4 opacity-70 justify-center">
                     <span>Toolkit Karir Profesional</span>
@@ -247,7 +248,7 @@
                     html: `
                         <div class="text-left text-sm space-y-4 mt-2">
                             <div class="text-center mb-4 text-slate-600 dark:text-zinc-400 text-xs">
-                                TulisRapi dikembangkan dengan ❤ untuk membantu Anda dalam penulisan dan urusan karir. <br/>
+                                TulCek (Tulis dan Cek) dikembangkan dengan ❤ untuk membantu Anda dalam penulisan dan urusan karir. <br/>
                                 <span class="font-semibold text-slate-700 dark:text-zinc-300 mt-1 block">Dikembangkan oleh Maaafiqs Dev</span>
                             </div>
                             <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30">
@@ -290,7 +291,7 @@
                                     <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.0</span>
                                 </div>
                                 <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
-                                    <li>Rilis perdana aplikasi TulisRapi.</li>
+                                    <li>Rilis perdana aplikasi TulCek (Tulis dan Cek).</li>
                                     <li>Fitur Analisis Teks (Penghitung Kata, Karakter, Kalimat).</li>
                                     <li>Sistem Pemeriksa Ejaan & Typo offline berbasis JS.</li>
                                     <li>Layout responsif untuk Mobile dan Desktop.</li>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Alat Parafrase Teks - PenaHitung')
+@section('title', 'Alat Parafrase Teks — TulCek (Tulis dan Cek)')
 
 @section('content')
 <div class="space-y-8">

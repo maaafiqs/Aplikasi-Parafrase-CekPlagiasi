@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/sparkles.svg" width="64" height="64" alt="TulisRapi Logo" />
 </p>
 
-<h1 align="center">TulisRapi</h1>
+<h1 align="center">TulCek (Tulis dan Cek)</h1>
 
 <p align="center">
   <strong>All-in-One Professional Career & Text Analytics Web Toolkit</strong>
@@ -25,7 +25,7 @@
 
 ## 🌟 Overview
 
-**TulisRapi** is built to bridge the gap between academic writing assistance and career preparation tools. Unlike traditional online services that upload personal documents and resumes to remote servers, **TulisRapi prioritizes client-side browser processing**. Your research papers, theses, cover letters, and sensitive CV details are processed locally without unauthorized data retention.
+**TulCek (Tulis dan Cek)** is built to bridge the gap between academic writing assistance and career preparation tools. Unlike traditional online services that upload personal documents and resumes to remote servers, **TulCek prioritizes client-side browser processing**. Your research papers, theses, cover letters, and sensitive CV details are processed locally without unauthorized data retention.
 
 Crafted with a modern, glassmorphic aesthetic, the application provides an intuitive experience across mobile and desktop devices with seamless **Dark Mode** and **Light Mode** support.
 
@@ -174,7 +174,7 @@ app-all-in-one/
   * Added Mendeley and Zotero reference pattern recognition.
   * Refined dark mode color palette.
 * **v1.0**:
-  * Initial public release of TulisRapi (Text analysis, word counter, and spelling diagnostics).
+  * Initial public release of TulCek (Text analysis, word counter, and spelling diagnostics).
 
 ---
 
@@ -191,7 +191,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## ☕ Support the Developer
 
-This project is independently built and maintained to stay 100% free, privacy-centric, and ad-free. If you find TulisRapi useful, consider supporting the developer:
+This project is independently built and maintained to stay 100% free, privacy-centric, and ad-free. If you find TulCek useful, consider supporting the developer:
 
 <p align="left">
   <a href="https://saweria.co/maaafiqs" target="_blank">
