@@ -22,36 +22,38 @@ Route::get('/ats-checker', function () {
     return view('tools.ats-checker');
 });
 
+Route::post('/api/paraphrase', function (\Illuminate\Http\Request $request) {
+    $text = $request->input('text', '');
+    $mode = $request->input('mode', 'standard');
+
+    if (empty(trim($text))) {
+        return response()->json([
+            'paraphrasedText' => '',
+            'similarity' => 100,
+            'originality' => 0
+        ]);
+    }
+
+    $result = \App\Services\ParaphraseService::paraphrase($text, $mode);
+
+    return response()->json([
+        'paraphrasedText' => $result['paraphrased'],
+        'similarity' => $result['similarity'],
+        'originality' => $result['originality']
+    ]);
+});
+
 Route::post('/api/translate', function (\Illuminate\Http\Request $request) {
     $text = $request->input('text');
-    $lang = $request->input('lang', 'en'); // target language
+    $lang = $request->input('lang', 'en');
+    $sl = $request->input('sl', 'id');
     
     if (empty($text)) return response()->json(['translatedText' => '']);
     
-    try {
-        $response = \Illuminate\Support\Facades\Http::get('https://translate.googleapis.com/translate_a/single', [
-            'client' => 'gtx',
-            'sl' => $request->input('sl', 'id'),
-            'tl' => $lang,
-            'dt' => 't',
-            'q' => $text
-        ]);
-        
-        if ($response->successful()) {
-            $data = $response->json();
-            $translatedText = '';
-            if (isset($data[0]) && is_array($data[0])) {
-                foreach ($data[0] as $segment) {
-                    if (isset($segment[0])) {
-                        $translatedText .= $segment[0];
-                    }
-                }
-            }
-            return response()->json(['translatedText' => $translatedText]);
-        }
-    } catch (\Exception $e) {
-        // Fallback or error
+    $translated = \App\Services\ParaphraseService::translateChunk($text, $sl, $lang);
+    if ($translated) {
+        return response()->json(['translatedText' => $translated]);
     }
     
-    return response()->json(['translatedText' => $text]); // fallback to original
+    return response()->json(['translatedText' => $text]);
 });
