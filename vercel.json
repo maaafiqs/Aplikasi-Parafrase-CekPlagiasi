@@ -5,7 +5,7 @@
   "buildCommand": "npm install && npm run build",
   "functions": {
     "api/index.php": {
-      "runtime": "vercel-php@0.7.2"
+      "runtime": "vercel-php@0.8.0"
     }
   },
   "routes": [
@@ -27,8 +27,10 @@
     }
   ],
   "env": {
+    "APP_NAME": "TulCek",
     "APP_ENV": "production",
     "APP_DEBUG": "true",
+    "APP_URL": "https://tulcek-app.vercel.app",
     "APP_KEY": "base64:z8LAlxHo9ufEoZgYKyVry1VLBuPvP2h9fWycX6sKm9U=",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
