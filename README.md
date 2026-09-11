@@ -5,11 +5,11 @@
 <h1 align="center">TulisRapi</h1>
 
 <p align="center">
-  <strong>Toolkit Profesional Karir & Analisis Teks All-in-One Berbasis Web</strong>
+  <strong>All-in-One Professional Career & Text Analytics Web Toolkit</strong>
 </p>
 
 <p align="center">
-  Platform gratis, cepat, dan aman untuk analisis dokumen, penghitung kata presisi, pembuatan surat lamaran kerja, pembuat CV ATS, alat parafrase, serta pengecekan kesesuaian sistem ATS (Applicant Tracking System).
+  A free, ultra-fast, and secure web application designed for comprehensive document analysis, precision word counting, ATS cover letter generation, ATS-friendly CV builder, text paraphrasing, and automated ATS match scoring.
 </p>
 
 <p align="center">
@@ -23,186 +23,186 @@
 
 ---
 
-## 🌟 Tentang Proyek
+## 🌟 Overview
 
-**TulisRapi** lahir dari kebutuhan akan alat penulisan dan persiapan karir yang terintegrasi, praktis, serta menjamin privasi pengguna. Berbeda dari kebanyakan layanan online yang mengunggah berkas pengguna ke server pihak ketiga, **TulisRapi mengutamakan pemrosesan lokal di sisi peramban (*client-side processing*)**. Dokumen, esai, tugas akhir, maupun resume pribadi Anda tidak disimpan atau disalahgunakan.
+**TulisRapi** is built to bridge the gap between academic writing assistance and career preparation tools. Unlike traditional online services that upload personal documents and resumes to remote servers, **TulisRapi prioritizes client-side browser processing**. Your research papers, theses, cover letters, and sensitive CV details are processed locally without unauthorized data retention.
 
-Aplikasi ini dirancang dengan antarmuka modern, interaktif, responsif untuk perangkat mobile maupun desktop, serta mendukung tampilan tema Gelap (*Dark Mode*) dan Terang (*Light Mode*).
-
----
-
-## ✨ Fitur-Fitur Utama
-
-### 1. 📊 Analisis Teks & Penghitung Kata (`/`)
-* **Metrik Komprehensif**: Menghitung jumlah kata, karakter (dengan & tanpa spasi), kalimat, paragraf, serta baris secara instan (*real-time*).
-* **Estimasi Waktu**: Prediksi estimasi durasi membaca (*reading time*) dan durasi berbicara (*speaking time*).
-* **Analisis Kata Kunci**: Distribusi frekuensi kata, kepadatan kata kunci (*keyword density*), serta pembobotan kata untuk keperluan SEO atau akademis.
-* **Import File Dokumen**: Dukungan unggah berkas Microsoft Word (`.docx`) dan teks polos (`.txt`) langsung diolah oleh browser via Mammoth.js & JSZip.
-* **Deteksi Referensi Akademik**: Mendeteksi pola sitasi/daftar pustaka (seperti format Mendeley, Zotero, APA, IEEE).
-* **Pemeriksa Typo/Ejaan**: Deteksi ejaan kata baku bahasa Indonesia.
-* **Ekspor Cepat**: Salin ke clipboard atau unduh hasil teks dalam format `.txt`.
-
-### 2. ✉️ Pembuat Surat Lamaran Kerja ATS (`/surat-lamaran`)
-* **Formulir Terstruktur**: Memandu penulisan data diri, instansi tujuan, posisi yang dilamar, paragraf pembuka, kompetensi, dan penutup.
-* **Pilihan Template**: Pilihan tata letak elegan (Standar, Modern, Klasik) dengan tipografi formal.
-* **Pratinjau Nyata A4 (*Live Preview*)**: Tampilan kertas dokumen ukuran A4 yang responsif dan proporsional.
-* **Ekspor Cetak PDF Instan**: Menggunakan browser print engine berbasis vektor yang menghasilkan teks tajam, tidak pecah, tanpa terpotong ke halaman berikutnya, dan bersih dari footer/URL browser.
-
-### 3. 📄 Pembuat CV ATS-Friendly (`/cv-ats`)
-* **Standar Applicant Tracking System**: Format sederhana, bersih, dan mudah dibaca oleh parser mesin rekrutmen perusahaan.
-* **Bagian Komplit**: Profil ringkas, riwayat kerja/pengalaman, pendidikan, keahlian teknis (*hard skills* & *soft skills*), proyek, serta sertifikasi.
-* **Pratinjau Langsung**: Tampilan hasil siap cetak atau simpan ke format PDF kapan saja.
-
-### 4. 🔄 Alat Parafrase Teks (`/parafrase`)
-* **Menghindari Plagiarisme**: Membantu memvariasikan kalimat dan kosakata untuk menyegarkan karya tulis atau artikel ilmiah.
-* **Pemrosesan Cerdas**: Terhubung dengan micro-endpoint penerjemah silang internal yang cepat dan efisien.
-* **Penghitung Batas Karakter & Salin Cepat**: Memudahkan pengolahan teks bertahap.
-
-### 5. 🎯 ATS Checker & Job Matcher (`/ats-checker`)
-* **Komparasi CV vs Deskripsi Lowongan**: Tempelkan isi Job Description (JD) dan teks CV Anda untuk menganalisis kecocokannya.
-* **Skor Persentase Kecocokan**: Menampilkan indikator visual seberapa besar relevansi kualifikasi CV Anda terhadap kriteria posisi kerja.
-* **Deteksi Kata Kunci**: Mengidentifikasi kata kunci yang sudah terpenuhi (*Matched Keywords*) dan kata kunci penting yang belum tercantum (*Missing Keywords*).
+Crafted with a modern, glassmorphic aesthetic, the application provides an intuitive experience across mobile and desktop devices with seamless **Dark Mode** and **Light Mode** support.
 
 ---
 
-## 🛠️ Tumpukan Teknologi (Tech Stack)
+## ✨ Key Features
 
-| Bagian | Teknologi |
+### 1. 📊 Advanced Text Analytics & Word Counter (`/`)
+* **Comprehensive Metrics**: Real-time counting of words, characters (with & without spaces), sentences, paragraphs, and lines.
+* **Reading & Speaking Time Estimates**: Accurate duration predictions based on standard human reading and speaking rates.
+* **Keyword Density Analysis**: Evaluates word frequency and keyword distribution for SEO, academic, and content writing.
+* **Document Import (`.docx` & `.txt`)**: In-browser document parsing using Mammoth.js and JSZip—zero files uploaded to the server.
+* **Academic Reference Detection**: Automatically detects academic citations and references (e.g., Mendeley, Zotero, APA, IEEE).
+* **Indonesian Spelling & Typo Checker**: Built-in typo detection and auto-suggestions.
+* **Instant Export**: Copy to clipboard or export processed text directly to `.txt`.
+
+### 2. ✉️ ATS Cover Letter Generator (`/surat-lamaran`)
+* **Guided Step-by-Step Form**: Input applicant details, recipient organization, target role, intro, core accomplishments, and closing statements.
+* **Multiple Typography Templates**: Choose between Standard, Modern, and Classic layouts tailored for corporate applications.
+* **Real-time A4 Paper Preview**: True-to-scale document canvas with interactive live updates.
+* **Vector-Quality PDF Export**: High-fidelity browser printing engine delivering sharp vector text without blurry canvas rasterization, blank pages, or unwanted browser URL headers/footers.
+
+### 3. 📄 ATS-Friendly Resume Builder (`/cv-ats`)
+* **Optimized for ATS Parsers**: Clean, single-column semantic structure easily parsed by Applicant Tracking Systems.
+* **Full Section Support**: Contact information, professional summary, work experience, education, technical & soft skills, projects, and certifications.
+* **Print & Export Ready**: Download directly as PDF or print with standard paper dimensions.
+
+### 4. 🔄 Smart Paraphrasing Tool (`/parafrase`)
+* **Anti-Plagiarism Rephrasing**: Restructure sentences and enrich vocabulary while preserving the original context.
+* **Dual-Pass Bridge**: Leverages an efficient back-translation bridge for natural sentence variation.
+* **Real-time Character Counter**: Clean interface with instant text clear and one-click copy.
+
+### 5. 🎯 ATS Resume Checker & Job Matcher (`/ats-checker`)
+* **CV vs. Job Description Comparison**: Compare your resume content against employer Job Descriptions (JDs).
+* **Match Percentage Score**: Visual progress gauge indicating overall keyword alignment with the job listing.
+* **Keyword Gap Analysis**: Highlights matched keywords and identifies missing keywords needed to optimize your application.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
 | --- | --- |
 | **Backend Framework** | [Laravel 12.x](https://laravel.com/) (PHP ^8.3) |
 | **Frontend Styling** | [Tailwind CSS v4](https://tailwindcss.com/) |
-| **Build Tool** | [Vite 8.x](https://vitejs.dev/) & Laravel Vite Plugin |
-| **Ikon UI** | [Lucide Icons](https://lucide.dev/) |
-| **Interaksi & Notifikasi** | [SweetAlert2](https://sweetalert2.github.io/) |
-| **Parsing Dokumen Klien** | [Mammoth.js](https://github.com/mwilliamson/mammoth.js) & [JSZip](https://stuk.github.io/jszip/) |
-| **Tipografi** | Google Fonts (*Plus Jakarta Sans* & *JetBrains Mono*) |
+| **Bundler & Build Tool** | [Vite 8.x](https://vitejs.dev/) & Laravel Vite Plugin |
+| **Icons** | [Lucide Icons](https://lucide.dev/) |
+| **Interactive Modals** | [SweetAlert2](https://sweetalert2.github.io/) |
+| **In-Browser Document Parsing** | [Mammoth.js](https://github.com/mwilliamson/mammoth.js) & [JSZip](https://stuk.github.io/jszip/) |
+| **Typography** | Google Fonts (*Plus Jakarta Sans* & *JetBrains Mono*) |
 
 ---
 
-## 🚀 Panduan Instalasi Lokal
+## 🚀 Local Installation & Setup
 
-Ikuti langkah-langkah berikut untuk menjalankan proyek ini di lingkungan lokal Anda:
+Follow these steps to set up and run the project in your local development environment:
 
-### 1. Prasyarat Sistem
-Pastikan telah menginstal:
-* **PHP >= 8.3** (disarankan via Laragon, XAMPP, atau PHP CLI native)
+### 1. Prerequisites
+Ensure the following tools are installed on your machine:
+* **PHP >= 8.3** (via Laragon, XAMPP, or native PHP CLI)
 * **Composer**
-* **Node.js >= 18.x** dan **NPM**
+* **Node.js >= 18.x** & **NPM**
 * **Git**
 
-### 2. Kloning Repositori
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/maaafiqs/Aplikasi-Parafrase-CekPlagiasi.git
 cd Aplikasi-Parafrase-CekPlagiasi
 ```
 
-### 3. Instal Dependensi Composer & Node
+### 3. Install Dependencies
 ```bash
 composer install
 npm install
 ```
 
-### 4. Konfigurasi Lingkungan (`.env`)
-Salin file `.env.example` menjadi `.env` lalu generate application key:
+### 4. Configure Environment
+Duplicate the environment template and generate an application encryption key:
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 5. Jalankan Server Pengembangan
-Jalankan frontend compiler dan server Laravel secara bersamaan:
+### 5. Launch the Development Server
+Run the Vite asset compiler and the Laravel development server:
 
 ```bash
-# Terminal 1: Kompilasi aset Vite
+# Terminal 1: Compile frontend assets with hot module reloading
 npm run dev
 
-# Terminal 2: Server Laravel
+# Terminal 2: Run Laravel backend server
 php artisan serve
 ```
 
-Atau cukup gunakan skrip bawaan Laravel:
+Or run everything using Laravel's concurrent runner:
 ```bash
 composer run dev
 ```
 
-Buka peramban Anda dan akses:
+Open your browser and navigate to:
 ```
 http://localhost:8000
 ```
-*(Atau `http://app-all-in-one.test` jika menggunakan Laragon virtual host).*
+*(Or `http://app-all-in-one.test` if using Laragon virtual hosts).*
 
 ---
 
-## 📁 Struktur Direktori Utama
+## 📁 Project Directory Structure
 
 ```plaintext
 app-all-in-one/
 ├── app/
-│   └── Http/             # Pengendali & Request logic
+│   └── Http/             # Request handlers & controllers
 ├── resources/
-│   ├── css/              # Konfigurasi Tailwind CSS
-│   ├── js/               # JavaScript aplikasi
+│   ├── css/              # Tailwind CSS configuration & custom utilities
+│   ├── js/               # Application JavaScript entrypoints
 │   └── views/
 │       ├── layouts/
-│       │   └── app.blade.php           # Master layout, navbar, changelog modal, dark mode
+│       │   └── app.blade.php           # Master layout, navigation, dark mode, changelog
 │       └── tools/
-│           ├── word-counter.blade.php  # Alat Analisis Teks & Dokumen
-│           ├── cover-letter.blade.php  # Alat Pembuat Surat Lamaran
-│           ├── cv-ats.blade.php        # Alat Pembuat CV Format ATS
-│           ├── paraphrase.blade.php    # Alat Parafrase Teks
-│           └── ats-checker.blade.php   # Scanner & Evaluator Skor ATS
+│           ├── word-counter.blade.php  # Text analysis & document reader tool
+│           ├── cover-letter.blade.php  # ATS cover letter generator
+│           ├── cv-ats.blade.php        # ATS-friendly resume creator
+│           ├── paraphrase.blade.php    # Smart paraphrase tool
+│           └── ats-checker.blade.php   # ATS resume score & job matcher
 ├── routes/
-│   └── web.php           # Definisi rute halaman & API bridge
-├── public/               # File publik & aset statis
+│   └── web.php           # Web routes & translation bridge endpoint
+├── public/               # Static assets & public entrypoint
 └── package.json / composer.json
 ```
 
 ---
 
-## 📋 Catatan Rilis & Versi
+## 📋 Release Notes & Changelog
 
-* **v1.3 (Terbaru)**:
-  * Pembaruan engine ekspor PDF Surat Lamaran ke native popup printing (kualitas vektor, anti-pecah, tidak terpotong halaman).
-  * Pembersihan header/footer otomatis dari browser pada dokumen cetak.
-  * Preview responsif ukuran penuh tanpa terpotong (*scroll-friendly*).
+* **v1.3 (Current)**:
+  * Overhauled Cover Letter PDF export to utilize the browser's native print engine (crisp vector quality, eliminates second-page cutoffs).
+  * Removed default browser print artifacts (timestamps, URL footers, page counts).
+  * Fully scrollable, unclipped live document preview canvas.
 * **v1.2**:
-  * Optimasi penguraian berkas Word besar secara asinkron (mencegah freeze/hang pada browser).
-  * Pembaruan widget donasi Saweria.
-  * Menu navigasi yang lebih ringkas dan teratur via dropdown menu.
+  * Asynchronous processing for large Word (`.docx`) files to prevent UI freezing.
+  * Enhanced donation banner integration (Saweria).
+  * Collapsible dropdown navigation menu for cleaner interface ergonomics.
 * **v1.1**:
-  * Peluncuran fitur Pembuat CV ATS & ATS Checker.
-  * Deteksi referensi sitasi Mendeley / Zotero.
-  * Penyempurnaan palet warna Dark Mode.
+  * Introduced ATS Resume Builder & ATS Checker tools.
+  * Added Mendeley and Zotero reference pattern recognition.
+  * Refined dark mode color palette.
 * **v1.0**:
-  * Rilis perdana TulisRapi (Penghitung Kata, Karakter, Analisis Teks & Typo Checker).
+  * Initial public release of TulisRapi (Text analysis, word counter, and spelling diagnostics).
 
 ---
 
-## 🤝 Kontribusi
+## 🤝 Contributing
 
-Kontribusi selalu disambut dengan baik! Jika Anda menemukan bug, memiliki ide fitur baru, atau ingin melakukan perbaikan tampilan:
-1. Fork repositori ini
-2. Buat branch fitur baru (`git checkout -b fitur/FiturKeren`)
-3. Commit perubahan Anda (`git commit -m 'Menambahkan fitur keren'`)
-4. Push ke branch Anda (`git push origin fitur/FiturKeren`)
-5. Ajukan **Pull Request**
+Contributions, issues, and feature requests are welcome!
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a **Pull Request**
 
 ---
 
-## ☕ Dukung Pengembang
+## ☕ Support the Developer
 
-Aplikasi ini dikembangkan dan dipelihara secara independen agar tetap dapat diakses gratis oleh semua kalangan tanpa gangguan iklan. Jika alat ini bermanfaat bagi Anda, dukung pengembang dengan traktiran kopi:
+This project is independently built and maintained to stay 100% free, privacy-centric, and ad-free. If you find TulisRapi useful, consider supporting the developer:
 
 <p align="left">
   <a href="https://saweria.co/maaafiqs" target="_blank">
-    <img src="https://img.shields.io/badge/Saweria-Dukung%20via%20Saweria-F2B600?style=for-the-badge&logo=coffeescript&logoColor=black" alt="Dukung di Saweria">
+    <img src="https://img.shields.io/badge/Saweria-Support%20via%20Saweria-F2B600?style=for-the-badge&logo=coffeescript&logoColor=black" alt="Support on Saweria">
   </a>
 </p>
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dilisensikan di bawah lisensi [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
-Dibuat dengan ❤️ oleh **[Maaafiqs Dev](https://maaafiqs.web.id)**.
+Crafted with ❤️ by **[Maaafiqs Dev](https://maaafiqs.web.id)**.
