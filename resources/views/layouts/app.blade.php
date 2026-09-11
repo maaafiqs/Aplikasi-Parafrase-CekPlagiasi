@@ -201,8 +201,38 @@
         </main>
 
         <!-- Footer Section -->
-        <footer class="mt-12 sm:mt-16 pt-6 sm:pt-8 pb-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col gap-4 sm:gap-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 text-center md:text-left">
+        <footer class="mt-12 sm:mt-16 pt-8 pb-8 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col items-center gap-6">
+            
+            <!-- Saweria Support Card (Permanent in Footer) -->
+            <div class="w-full max-w-xl p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/5 dark:from-amber-500/15 dark:via-orange-500/10 dark:to-transparent border border-amber-500/20 dark:border-amber-500/20 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 shadow-sm backdrop-blur-sm">
+                <div class="text-center sm:text-left">
+                    <p class="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center justify-center sm:justify-start gap-1.5">
+                        <i data-lucide="coffee" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+                        Dukung TulCek via Saweria
+                    </p>
+                    <p class="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
+                        Bantu kami menjaga platform tetap gratis, cepat, dan 100% bebas iklan.
+                    </p>
+                </div>
+                <a href="https://saweria.co/maaafiqs" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#FFC000] to-[#F2B600] text-amber-950 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-md shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 active:scale-95 flex-shrink-0 border border-amber-400/50 w-full sm:w-auto">
+                    <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-600 fill-rose-600"></i>
+                    <span>Dukung Saweria</span>
+                </a>
+            </div>
+
+            <!-- Feedback & Contact Email -->
+            <div class="text-center">
+                <p class="text-xs text-slate-600 dark:text-zinc-400 flex flex-wrap items-center justify-center gap-1.5">
+                    <i data-lucide="message-square" class="w-3.5 h-3.5 text-indigo-500 dark:text-emerald-400 flex-shrink-0"></i>
+                    <span>Apabila ada kritik dan saran kirim ke email kami:</span>
+                    <a href="mailto:maaafiqsdev@gmail.com" class="font-semibold text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 underline underline-offset-4 decoration-indigo-300 dark:decoration-emerald-500/40 transition-colors">
+                        maaafiqsdev@gmail.com
+                    </a>
+                </p>
+            </div>
+
+            <!-- Copyright & Brand info -->
+            <div class="w-full pt-4 border-t border-slate-200/40 dark:border-zinc-800/40 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-500 dark:text-zinc-400 text-center md:text-left">
                 <p>
                     © {{ date('Y') }} TulCek (Tulis dan Cek). Website ini dikelola oleh <a href="https://maaafiqs.web.id" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 font-semibold transition-colors">Maaafiqs Dev</a>.
                 </p>
