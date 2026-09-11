@@ -10,6 +10,7 @@ putenv('SESSION_DRIVER=cookie');
 putenv('CACHE_STORE=array');
 putenv('CACHE_DRIVER=array');
 putenv('QUEUE_CONNECTION=sync');
+putenv('LOG_CHANNEL=stderr');
 putenv('VIEW_COMPILED_PATH=/tmp/views');
 
 $_ENV['VERCEL'] = '1';
@@ -19,10 +20,12 @@ $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['CACHE_STORE'] = 'array';
 $_ENV['CACHE_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
+$_ENV['LOG_CHANNEL'] = 'stderr';
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
 
 $_SERVER['VERCEL'] = '1';
 $_SERVER['APP_KEY'] = $appKey;
+$_SERVER['LOG_CHANNEL'] = 'stderr';
 
 // Ensure writable storage and views directories exist in /tmp for Vercel serverless environment
 $storagePaths = [
@@ -43,6 +46,7 @@ foreach ($storagePaths as $path) {
         @mkdir($path, 0755, true);
     }
 }
+@touch('/tmp/storage/logs/laravel.log');
 
 // Forward request to Laravel public index.php
 require __DIR__ . '/../public/index.php';
