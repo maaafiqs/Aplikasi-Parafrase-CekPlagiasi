@@ -5,6 +5,24 @@
 @section('content')
 <div class="space-y-8">
     
+    @push('styles')
+    <style>
+        .btn-parafrase-custom {
+            background-color: #4f46e5 !important; /* indigo-600 */
+            color: #ffffff !important;
+        }
+        .btn-parafrase-custom:hover {
+            background-color: #4338ca !important; /* indigo-700 */
+        }
+        .dark .btn-parafrase-custom {
+            background-color: #059669 !important; /* emerald-600 */
+        }
+        .dark .btn-parafrase-custom:hover {
+            background-color: #047857 !important; /* emerald-700 */
+        }
+    </style>
+    @endpush
+    
     <div class="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-md rounded-3xl p-6 border border-slate-200/60 dark:border-zinc-800/60 shadow-sm text-center max-w-3xl mx-auto">
         <h2 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
             <i data-lucide="refresh-cw" class="w-6 h-6 text-indigo-500 dark:text-emerald-400"></i>
@@ -30,11 +48,11 @@
             
             <textarea id="inputText" class="w-full flex-grow min-h-[300px] p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-emerald-500/50 rounded-xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 dark:focus:ring-emerald-500/5 transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-none" placeholder="Masukkan teks bahasa Indonesia yang ingin diparafrasekan di sini..."></textarea>
             
-            <div class="mt-4 flex justify-between items-center">
+            <div class="mt-4 flex justify-between items-center border-t border-slate-100 dark:border-zinc-800/60 pt-4">
                 <span id="charCount" class="text-xs text-slate-400 dark:text-zinc-500 font-medium">0 / 2000 karakter</span>
-                <button id="btnParaphrase" class="px-6 py-2.5 rounded-xl bg-indigo-600 dark:bg-emerald-600 text-white font-semibold text-sm hover:bg-indigo-700 dark:hover:bg-emerald-500 transition-colors shadow-lg shadow-indigo-500/20 dark:shadow-emerald-500/20 flex items-center gap-2">
+                <button id="btnParaphrase" class="btn-parafrase-custom px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm flex items-center justify-center gap-2">
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
-                    Parafrase Sekarang
+                    Parafrase Teks
                 </button>
             </div>
         </div>
@@ -55,12 +73,6 @@
             <div class="relative flex-grow flex flex-col">
                 <textarea id="outputText" readonly class="w-full flex-grow min-h-[300px] p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 rounded-xl focus:outline-none transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-none" placeholder="Hasil parafrase akan muncul di sini..."></textarea>
                 
-                <!-- Loading Overlay -->
-                <div id="loadingOverlay" class="absolute inset-0 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-                    <div class="w-10 h-10 border-4 border-indigo-200 dark:border-emerald-900 border-t-indigo-600 dark:border-t-emerald-500 rounded-full animate-spin mb-3"></div>
-                    <p class="text-sm font-semibold text-slate-700 dark:text-zinc-300">Menganalisis & Memparafrase...</p>
-                    <p class="text-xs text-slate-400 mt-1">Menggunakan teknik Back-Translation AI</p>
-                </div>
             </div>
         </div>
 
@@ -77,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClear = document.getElementById('btnClear');
     const btnCopy = document.getElementById('btnCopy');
     const charCount = document.getElementById('charCount');
-    const loadingOverlay = document.getElementById('loadingOverlay');
     
     const MAX_CHARS = 2000;
 
@@ -130,9 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Show loading
-        loadingOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        const originalBtnHTML = btnParaphrase.innerHTML;
+        // Show loading state inline
+        outputText.value = 'Sedang memproses parafrase, mohon tunggu sebentar...';
         btnParaphrase.disabled = true;
+        btnParaphrase.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Memproses...';
+        lucide.createIcons();
 
         try {
             // Step 1: Translate ID to EN
@@ -172,8 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 confirmButtonColor: '#ef4444'
             });
         } finally {
-            loadingOverlay.classList.add('opacity-0', 'pointer-events-none');
             btnParaphrase.disabled = false;
+            btnParaphrase.innerHTML = originalBtnHTML;
+            lucide.createIcons();
         }
     });
 });

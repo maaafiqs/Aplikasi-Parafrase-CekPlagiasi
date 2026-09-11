@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'PenaHitung — Cek Kata, Paragraf & Dokumen Word')</title>
+    <title>@yield('title', 'TulisRapi — Cek Kata, Paragraf & Dokumen Word')</title>
     
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -95,42 +95,66 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 flex flex-col min-h-screen justify-between">
         
         <!-- Header Section -->
-        <header class="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-200/60 dark:border-zinc-800/60 pb-6 gap-4">
+        <header class="relative z-50 flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-200/60 dark:border-zinc-800/60 pb-6 gap-4">
             <a href="{{ url('/') }}" class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
                     <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-                        PenaHitung
-                        <span class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider">v2.0</span>
+                        TulisRapi
+                        <button id="btnChangelog" class="text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded-full uppercase tracking-wider hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-all cursor-pointer border-none shadow-sm hover:-translate-y-0.5">v1.2</button>
                     </h1>
                     <p class="text-xs text-slate-500 dark:text-zinc-400">Toolkit Profesional Karir & Teks</p>
                 </div>
             </a>
             
-            <nav class="flex items-center gap-2 bg-white/50 dark:bg-zinc-900/50 p-1.5 rounded-2xl border border-slate-200/60 dark:border-zinc-800/60 backdrop-blur-md overflow-x-auto max-w-full">
-                <a href="{{ url('/') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
-                    <i data-lucide="file-text" class="w-4 h-4"></i>
-                    Analisis Teks
-                </a>
-                <a href="{{ url('/surat-lamaran') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
-                    <i data-lucide="mail" class="w-4 h-4"></i>
-                    Surat Lamaran
-                </a>
-                <a href="{{ url('/parafrase') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-                    Parafrase
-                </a>
-                <a href="{{ url('/cv-ats') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
-                    <i data-lucide="briefcase" class="w-4 h-4"></i>
-                    CV ATS
-                </a>
-                <a href="{{ url('/ats-checker') }}" class="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800 text-indigo-600 dark:text-emerald-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:text-zinc-400 dark:hover:text-zinc-200' }}">
-                    <i data-lucide="check-circle" class="w-4 h-4"></i>
-                    Cek ATS
-                </a>
-            </nav>
+            <!-- Navbar Menu with Dropdown -->
+            <div class="relative ml-auto md:ml-0" id="navDropdownContainer">
+                <button id="navDropdownBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800/60 text-slate-700 dark:text-zinc-200 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all shadow-sm">
+                    <i data-lucide="layout-grid" class="w-4 h-4 text-indigo-500 dark:text-emerald-400"></i>
+                    Menu Alat
+                    <i data-lucide="chevron-down" class="w-4 h-4 ml-1 opacity-50"></i>
+                </button>
+                
+                <nav id="navMenu" class="absolute top-full right-0 mt-2 w-56 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl overflow-hidden hidden flex-col z-50 p-2">
+                    <a href="{{ url('/') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('/') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        Analisis Teks
+                    </a>
+                    <a href="{{ url('/surat-lamaran') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('surat-lamaran') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                        <i data-lucide="mail" class="w-4 h-4"></i>
+                        Surat Lamaran
+                    </a>
+                    <a href="{{ url('/parafrase') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('parafrase') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        Parafrase
+                    </a>
+                    <a href="{{ url('/cv-ats') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('cv-ats') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i>
+                        CV ATS
+                    </a>
+                    <a href="{{ url('/ats-checker') }}" class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all {{ request()->is('ats-checker') ? 'bg-indigo-50 dark:bg-zinc-800/80 text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50' }}">
+                        <i data-lucide="check-circle" class="w-4 h-4"></i>
+                        Cek ATS
+                    </a>
+
+                    <!-- Coming Soon Menu -->
+                    <div class="px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center justify-between gap-2 transition-all text-slate-400 dark:text-zinc-500 cursor-not-allowed opacity-80 bg-slate-50/50 dark:bg-zinc-900/30" title="Fitur sedang dalam tahap pengembangan">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                            Cek Plagiasi
+                        </div>
+                        <span class="text-[9px] px-1.5 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider">Segera</span>
+                    </div>
+                    
+                    <div class="h-px bg-slate-200 dark:bg-zinc-800 my-1 mx-2"></div>
+                    <button id="btnChangelogMenu" class="w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all text-slate-600 hover:bg-slate-50 dark:text-zinc-400 dark:hover:bg-zinc-800/50">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                        Tentang & Versi
+                    </button>
+                </nav>
+            </div>
 
             <div class="flex items-center gap-4">
                 <!-- Theme Toggle Button -->
@@ -140,18 +164,42 @@
             </div>
         </header>
 
+        <!-- Global Support / Donation Banner -->
+        <div class="mb-8 relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200/50 dark:border-amber-800/30 p-5 flex flex-col md:flex-row justify-between items-center gap-5 group shadow-sm transition-all hover:shadow-md">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 dark:bg-amber-500/5 rounded-full blur-[50px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+            
+            <div class="relative z-10 text-center md:text-left flex-1">
+                <h3 class="text-sm font-bold text-amber-800 dark:text-amber-400 flex items-center gap-2 justify-center md:justify-start mb-1">
+                    <i data-lucide="heart" class="w-4 h-4 text-rose-500 dark:text-rose-400 fill-rose-500/20 dark:fill-rose-400/20 animate-pulse"></i>
+                    Aplikasi ini bermanfaat untuk Anda?
+                </h3>
+                <p class="text-[13px] text-slate-600 dark:text-zinc-400 leading-relaxed max-w-2xl">
+                    Dukung pengembangan TulisRapi agar terus menjadi platform <span class="font-semibold text-slate-700 dark:text-zinc-300">gratis, super cepat,</span> dan <span class="font-semibold text-slate-700 dark:text-zinc-300">100% bebas iklan</span>. Setiap kopi dari Anda adalah energi bagi kami! 🚀
+                </p>
+            </div>
+            
+            <a href="https://saweria.co/maaafiqs" target="_blank" rel="noopener noreferrer" class="relative z-10 flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-[#FFC000] to-[#F2B600] text-amber-950 font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 hover:scale-[1.02] active:scale-95 flex-shrink-0 border border-amber-400/50">
+                <i data-lucide="coffee" class="w-4.5 h-4.5"></i>
+                <span class="tracking-wide">Dukung via Saweria</span>
+            </a>
+        </div>
+
         <!-- Main Body -->
         <main class="mb-auto">
             @yield('content')
         </main>
 
         <!-- Footer Section -->
-        <footer class="mt-12 pt-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-400 dark:text-zinc-500">
-            <p>© {{ date('Y') }} PenaHitung. Dirancang dengan keindahan & kinerja.</p>
-            <div class="flex gap-4">
-                <span>Toolkit Karir Profesional</span>
-                <span>•</span>
-                <span>Client-Side Processing</span>
+        <footer class="mt-16 pt-8 pb-6 border-t border-slate-200/60 dark:border-zinc-800/60 flex flex-col gap-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500 dark:text-zinc-400 pt-2 text-center md:text-left">
+                <p>
+                    © {{ date('Y') }} TulisRapi. Website ini dikelola oleh <a href="https://maaafiqs.web.id" target="_blank" rel="noopener noreferrer" class="text-indigo-600 dark:text-emerald-400 hover:text-indigo-700 dark:hover:text-emerald-300 font-semibold transition-colors">Maaafiqs Dev</a>.
+                </p>
+                <div class="flex gap-4 opacity-70 justify-center">
+                    <span>Toolkit Karir Profesional</span>
+                    <span>•</span>
+                    <span>Client-Side Processing</span>
+                </div>
             </div>
         </footer>
 
@@ -167,6 +215,100 @@
 
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
+            const navDropdownBtn = document.getElementById('navDropdownBtn');
+            const navMenu = document.getElementById('navMenu');
+            const btnChangelog = document.getElementById('btnChangelog');
+            const btnChangelogMenu = document.getElementById('btnChangelogMenu');
+
+            // Dropdown Menu Logic
+            if(navDropdownBtn && navMenu) {
+                navDropdownBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('hidden');
+                    navMenu.classList.toggle('flex');
+                });
+                
+                document.addEventListener('click', (e) => {
+                    if (!navMenu.contains(e.target) && !navDropdownBtn.contains(e.target)) {
+                        navMenu.classList.add('hidden');
+                        navMenu.classList.remove('flex');
+                    }
+                });
+            }
+
+            // Changelog Logic
+            const showChangelog = () => {
+                if (navMenu) {
+                    navMenu.classList.add('hidden');
+                    navMenu.classList.remove('flex');
+                }
+                Swal.fire({
+                    title: 'Tentang & Riwayat Versi',
+                    html: `
+                        <div class="text-left text-sm space-y-4 mt-2">
+                            <div class="text-center mb-4 text-slate-600 dark:text-zinc-400 text-xs">
+                                TulisRapi dikembangkan dengan ❤ untuk membantu Anda dalam penulisan dan urusan karir. <br/>
+                                <span class="font-semibold text-slate-700 dark:text-zinc-300 mt-1 block">Dikembangkan oleh Maaafiqs Dev</span>
+                            </div>
+                            <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-emerald-500"></i>
+                                    <span class="font-bold text-emerald-700 dark:text-emerald-400">Versi 1.3 (Saat Ini)</span>
+                                    <span class="ml-auto text-xs text-slate-400 dark:text-zinc-500">6 Agustus 2026</span>
+                                </div>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                    <li>Perbaikan ekspor PDF Surat Lamaran: isi tidak lagi kosong atau terpotong ke halaman kedua.</li>
+                                    <li>Ganti engine ekspor PDF dari <em>html2canvas</em> (lambat & sering hang) ke sistem <em>print popup window</em> berbasis browser — instan dan kualitas teks vektor.</li>
+                                    <li>Menghilangkan header/footer bawaan browser (tanggal, URL, nomor halaman) pada hasil PDF.</li>
+                                    <li>Preview Surat Lamaran kini menampilkan konten penuh tanpa terpotong.</li>
+                                </ul>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.2</span>
+                                </div>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                    <li>Perbaikan bug macet (freeze) saat upload file Word besar.</li>
+                                    <li>Peningkatan performa UI menggunakan sistem Asynchronous.</li>
+                                    <li>Perombakan antarmuka donasi (Dukungan Saweria).</li>
+                                    <li>Penyembunyian menu navigasi ke dalam *dropdown* untuk UI lebih bersih.</li>
+                                    <li>Penonaktifan native spellchecker yang memberatkan browser.</li>
+                                </ul>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.1</span>
+                                </div>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                    <li>Penambahan alat pembuat CV ATS & ATS Checker.</li>
+                                    <li>Integrasi deteksi referensi (Mendeley/Zotero) dari file .docx.</li>
+                                    <li>Penyempurnaan warna tema (Dark Mode) yang lebih redup.</li>
+                                </ul>
+                            </div>
+                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.0</span>
+                                </div>
+                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                    <li>Rilis perdana aplikasi TulisRapi.</li>
+                                    <li>Fitur Analisis Teks (Penghitung Kata, Karakter, Kalimat).</li>
+                                    <li>Sistem Pemeriksa Ejaan & Typo offline berbasis JS.</li>
+                                    <li>Layout responsif untuk Mobile dan Desktop.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    `,
+                    width: '36em',
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#6366f1',
+                    didOpen: () => {
+                        if(typeof lucide !== 'undefined') lucide.createIcons();
+                    }
+                });
+            };
+
+            if(btnChangelog) btnChangelog.addEventListener('click', showChangelog);
+            if(btnChangelogMenu) btnChangelogMenu.addEventListener('click', showChangelog);
 
             function initializeTheme() {
                 const isDark = localStorage.getItem('theme') === 'dark' || 

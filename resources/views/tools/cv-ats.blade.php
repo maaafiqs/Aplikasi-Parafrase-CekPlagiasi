@@ -3,13 +3,11 @@
 @section('title', 'Editor CV ATS - PenaHitung')
 
 @push('scripts-top')
-    <!-- html2pdf.js for client-side PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style id="cv-ats-styles">
-        /* A4 aspect ratio and ATS CV styling */
+        /* A4 paper preview for CV */
         .cv-preview {
-            width: 100%;
-            aspect-ratio: 1 / 1.414;
+            width: 794px;
+            min-height: 1123px;
             background: white;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
             padding: 3rem;
@@ -17,8 +15,7 @@
             font-family: 'Helvetica', 'Arial', sans-serif;
             font-size: 11pt;
             line-height: 1.4;
-            overflow: hidden;
-            position: relative;
+            box-sizing: border-box;
         }
         /* Ensure dark mode doesn't invert the CV paper */
         .dark .cv-preview {
@@ -234,11 +231,13 @@
                 </div>
             </div>
 
-            <!-- A4 Preview Container -->
+            <!-- A4 Preview Container (scaled 75% for display) -->
             <div class="w-full flex justify-center bg-slate-100 dark:bg-zinc-950/50 rounded-2xl p-4 overflow-x-auto">
-                <div id="previewContainer" class="cv-preview template-standard max-w-[800px] shrink-0" style="min-width: 600px;">
-                    <!-- Content injected via JS -->
-                    <div id="cvContent"></div>
+                <div style="width: 596px; flex-shrink: 0;">
+                    <div id="previewContainer" class="cv-preview template-standard" style="transform-origin: top left; transform: scale(0.75); margin-bottom: -282px;">
+                        <!-- Content injected via JS -->
+                        <div id="cvContent"></div>
+                    </div>
                 </div>
             </div>
             
@@ -653,111 +652,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // PDF Export logic
+    // PDF Export — opens a clean popup window with only the CV content and prints it
     btnExportPDF.addEventListener('click', () => {
-        Swal.fire({
-            title: 'Mengekspor PDF ATS...',
-            text: 'Harap tunggu sebentar',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+        const currentTemplate = templateSelector.value;
 
-        // 1. Mock document.styleSheets to bypass html2canvas oklch parse error
-        const originalStyleSheets = document.styleSheets;
-        const cvStyleSheet = Array.from(document.styleSheets).find(sheet => sheet.ownerNode && sheet.ownerNode.id === 'cv-ats-styles');
+        // Font family per template
+        const fontFamily = currentTemplate === 'template-profesional' ? "'Calibri', 'Arial', sans-serif"
+                         : currentTemplate === 'template-elegan'      ? "'Garamond', 'Georgia', serif"
+                         : "'Helvetica', 'Arial', sans-serif";
 
-        try {
-            Object.defineProperty(document, 'styleSheets', {
-                value: cvStyleSheet ? [cvStyleSheet] : [],
-                configurable: true
-            });
-        } catch (e) {
-            console.warn("Could not redefine document.styleSheets", e);
+        // Extra CSS per template
+        const templateExtraCSS = currentTemplate === 'template-profesional' ? `
+            h1 { color: #0f172a; border-bottom: 3px solid #3b82f6; padding-bottom: 5px; }
+            .section-title { color: #1d4ed8; border-bottom: 2px solid #93c5fd; }
+            .item-header { color: #0f172a; }
+        ` : currentTemplate === 'template-elegan' ? `
+            h1 { font-family: 'Georgia', serif; color: #18181b; font-weight: normal; letter-spacing: 1px; }
+            .section-title { font-style: italic; border-bottom: 1px solid #71717a; text-align: center; }
+        ` : '';
+
+        // Build the full HTML for the print window
+        const printHTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>CV ATS</title>
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 15mm 18mm;
+            font-family: ${fontFamily};
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #000;
+            background: #fff;
         }
+        h1 { font-size: 18pt; font-weight: bold; margin: 0 0 2px 0; text-align: center; text-transform: uppercase; }
+        .contact-info { text-align: center; font-size: 9.5pt; margin-bottom: 15px; }
+        .section-title {
+            font-size: 11pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 2px solid #000;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            padding-bottom: 2px;
+        }
+        .item-header { display: flex; justify-content: space-between; font-weight: bold; }
+        .item-sub { display: flex; justify-content: space-between; font-style: italic; margin-bottom: 5px; }
+        p { text-align: justify; margin: 0; margin-bottom: 15px; font-size: 10pt; }
+        ul { margin: 0 0 10px 0; padding-left: 20px; font-size: 10pt; }
+        li { margin-bottom: 3px; }
+        img { display: block; }
+        ${templateExtraCSS}
+    </style>
+</head>
+<body>
+    ${cvContent.innerHTML}
+</body>
+</html>`;
 
-        // 2. Proxy window.getComputedStyle to neutralize oklch values computed from parent inheritance
-        const originalGetComputedStyle = window.getComputedStyle;
-        window.getComputedStyle = function(el, pseudoEl) {
-            const style = originalGetComputedStyle(el, pseudoEl);
-            return new Proxy(style, {
-                get(target, prop) {
-                    if (prop === 'getPropertyValue') {
-                        return function(propertyName) {
-                            const val = target.getPropertyValue(propertyName);
-                            if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
-                                if (propertyName.includes('background')) return 'rgb(255, 255, 255)';
-                                return 'rgb(0, 0, 0)';
-                            }
-                            return val;
-                        };
-                    }
-                    const val = target[prop];
-                    if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
-                        if (prop === 'backgroundColor') return 'rgb(255, 255, 255)';
-                        if (prop.toLowerCase().includes('color')) return 'rgb(0, 0, 0)';
-                        return 'rgb(0, 0, 0)';
-                    }
-                    if (typeof val === 'function') {
-                        return val.bind(target);
-                    }
-                    return val;
-                }
-            });
-        };
-
-        const printable = document.getElementById('previewContainer').cloneNode(true);
-        printable.style.boxShadow = 'none';
-        printable.style.width = '794px'; 
-        printable.style.height = '1123px';
-        printable.style.padding = '50px 70px';
-        printable.style.position = 'absolute';
-        printable.style.left = '-9999px';
-        document.body.appendChild(printable);
-
-        const opt = {
-            margin:       0,
-            filename:     'CV_ATS_' + (elements.cvName.value.replace(/ /g, '_') || 'Kerja') + '.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        const cleanup = () => {
-            // Restore document.styleSheets
-            try {
-                Object.defineProperty(document, 'styleSheets', {
-                    value: originalStyleSheets,
-                    configurable: true
-                });
-            } catch (e) {}
-            // Restore getComputedStyle
-            window.getComputedStyle = originalGetComputedStyle;
-            // Remove cloned element
-            if (printable.parentNode) {
-                document.body.removeChild(printable);
-            }
-        };
-
-        html2pdf().set(opt).from(printable).save().then(() => {
-            cleanup();
+        // Open popup, write HTML, then print
+        const pw = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
+        if (!pw) {
             Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: 'CV ATS berhasil diunduh.',
-                timer: 2000,
-                showConfirmButton: false
+                icon: 'warning',
+                title: 'Popup Diblokir',
+                text: 'Mohon izinkan popup dari situs ini di browser Anda, lalu coba lagi.',
             });
-        }).catch(err => {
-            cleanup();
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: 'Terjadi kesalahan saat mengekspor PDF: ' + (err.message || err)
-            });
-            console.error(err);
-        });
+            return;
+        }
+        pw.document.open();
+        pw.document.write(printHTML);
+        pw.document.close();
+
+        pw.onload = () => {
+            setTimeout(() => {
+                pw.focus();
+                pw.print();
+            }, 300);
+        };
+
+        // Fallback if onload already fired
+        setTimeout(() => {
+            try { pw.focus(); pw.print(); } catch(e) {}
+        }, 800);
     });
 
 });

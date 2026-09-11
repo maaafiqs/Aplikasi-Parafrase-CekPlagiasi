@@ -2,6 +2,12 @@
 
 @section('title', 'PenaHitung — Cek Kata, Paragraf & Dokumen Word')
 
+@push('scripts-top')
+    <!-- External Libraries for Document Processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+@endpush
+
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
@@ -55,7 +61,7 @@
                     </div>
                     
                     <div class="relative">
-                        <textarea id="textEditor" class="w-full min-h-[300px] p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-emerald-500/50 rounded-xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 dark:focus:ring-emerald-500/5 transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-y" placeholder="Mulai mengetik di sini, atau upload dokumen Word Anda di atas..."></textarea>
+                        <textarea id="textEditor" spellcheck="false" class="w-full min-h-[300px] p-4 bg-slate-50/50 dark:bg-zinc-950/40 border border-slate-200 dark:border-zinc-800 focus:border-indigo-400 dark:focus:border-emerald-500/50 rounded-xl focus:outline-none focus:ring-4 focus:ring-indigo-500/5 dark:focus:ring-emerald-500/5 transition-all text-slate-800 dark:text-zinc-100 leading-relaxed text-sm resize-y" placeholder="Mulai mengetik di sini, atau upload dokumen Word Anda di atas..."></textarea>
                     </div>
                 </div>
 
@@ -169,8 +175,8 @@
                         Skor Keterbacaan
                     </h2>
                     
-                    <div class="flex items-center gap-4">
-                        <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                    <div class="flex items-center gap-5">
+                        <div class="relative w-16 h-16 flex-none">
                             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                                 <path class="text-slate-100 dark:text-zinc-800" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
                                 <path id="readabilityCircle" class="text-slate-300 dark:text-zinc-600 transition-all duration-1000 ease-out" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
@@ -179,9 +185,9 @@
                                 <span id="readabilityScoreText" class="text-lg font-black text-slate-800 dark:text-white">0</span>
                             </div>
                         </div>
-                        <div>
+                        <div class="flex-1 min-w-0">
                             <p id="readabilityLevel" class="text-sm font-bold text-slate-700 dark:text-zinc-200">Belum ada teks</p>
-                            <p id="readabilityDesc" class="text-[11px] text-slate-500 dark:text-zinc-400 mt-1">Ketik kalimat untuk mengukur tingkat kesulitan membaca (Flesch Score).</p>
+                            <p id="readabilityDesc" class="text-[11px] text-slate-500 dark:text-zinc-400 mt-1 leading-relaxed">Ketik kalimat untuk mengukur tingkat kesulitan membaca (Flesch Score).</p>
                         </div>
                     </div>
                 </div>
@@ -382,40 +388,72 @@
                         // Process docx using mammoth.js
                         const arrayBuffer = event.target.result;
                         
-                        // Concurrent reference detection using JSZip
-                        detectReferenceManager(arrayBuffer);
+                        // Concurrent reference detection using JSZip (deferred to prevent blocking)
+                        setTimeout(() => {
+                            try {
+                                detectReferenceManager(arrayBuffer.slice(0));
+                            } catch (e) {
+                                console.error("Error in reference manager:", e);
+                            }
+                        }, 50);
 
-                        mammoth.extractRawText({ arrayBuffer: arrayBuffer })
-                            .then(function(result) {
-                                textEditor.value = result.value;
-                                analyzeText(result.value);
-                                
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Selesai!',
-                                    text: `Teks dari dokumen "${file.name}" berhasil diimpor.`,
-                                    timer: 2000,
-                                    showConfirmButton: false,
-                                });
+                        // Defer mammoth extraction slightly so UI can render the 100% progress
+                        setTimeout(() => {
+                            try {
+                                mammoth.extractRawText({ arrayBuffer: arrayBuffer })
+                                    .then(function(result) {
+                                        textEditor.value = result.value;
+                                        
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Selesai!',
+                                            text: `Teks dari dokumen "${file.name}" berhasil diimpor.`,
+                                            timer: 2000,
+                                            showConfirmButton: false,
+                                        });
 
-                                setTimeout(() => {
-                                    uploadProgress.style.width = '0%';
-                                }, 800);
-                            })
-                            .catch(function(err) {
+                                        // Defer analysis to avoid freezing the sweet alert animation
+                                        setTimeout(() => {
+                                            analyzeText(result.value);
+                                            uploadProgress.style.width = '0%';
+                                        }, 100);
+                                    })
+                                    .catch(function(err) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal Membaca Dokumen',
+                                            text: 'Isi file gagal terbaca atau dokumen corrupt.',
+                                            confirmButtonColor: '#ef4444',
+                                        });
+                                        uploadProgress.style.width = '0%';
+                                    });
+                            } catch (err) {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Gagal Membaca Dokumen',
-                                    text: 'Terjadi kesalahan saat mengekstrak teks dokumen Word Anda.',
+                                    title: 'Sistem Error',
+                                    text: 'Terjadi kegagalan sistem pemrosesan Word (Library tidak dimuat dengan benar). Pastikan koneksi internet aktif.',
                                     confirmButtonColor: '#ef4444',
                                 });
                                 uploadProgress.style.width = '0%';
-                            });
+                            }
+                        }, 50);
                     } else if (extension === 'txt') {
                         // Direct read for txt
                         const text = event.target.result;
                         textEditor.value = text;
-                        analyzeText(text);
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Selesai!',
+                            text: `Teks dari berkas "${file.name}" berhasil diimpor.`,
+                            timer: 2000,
+                            showConfirmButton: false,
+                        });
+
+                        setTimeout(() => {
+                            analyzeText(text);
+                            uploadProgress.style.width = '0%';
+                        }, 100);
 
                         // Set references detector warning for plain text file
                         document.getElementById('refDetectorContent').innerHTML = `
@@ -429,19 +467,7 @@
                                 </div>
                             </div>
                         `;
-                        lucide.createIcons();
-                        
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Selesai!',
-                            text: `Teks dari berkas "${file.name}" berhasil diimpor.`,
-                            timer: 2000,
-                            showConfirmButton: false,
-                        });
-
-                        setTimeout(() => {
-                            uploadProgress.style.width = '0%';
-                        }, 800);
+                        if(typeof lucide !== 'undefined') lucide.createIcons();
                     }
                 };
 
@@ -466,10 +492,11 @@
                         </div>
                     </div>
                 `;
-                lucide.createIcons();
+                if(typeof lucide !== 'undefined') lucide.createIcons();
 
-                JSZip.loadAsync(arrayBuffer)
-                    .then(function(zip) {
+                try {
+                    JSZip.loadAsync(arrayBuffer)
+                        .then(function(zip) {
                         const documentXml = zip.file("word/document.xml");
                         const footnotesXml = zip.file("word/footnotes.xml");
                         const endnotesXml = zip.file("word/endnotes.xml");
@@ -556,8 +583,23 @@
                                 </div>
                             </div>
                         `;
-                        lucide.createIcons();
+                        if(typeof lucide !== 'undefined') lucide.createIcons();
                     });
+                } catch(e) {
+                    console.error("JSZip error:", e);
+                    refContent.innerHTML = `
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-red-50 dark:bg-red-950/20 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-800/20">
+                            <div class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="x-circle" class="w-4.5 h-4.5"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-semibold">Library Hilang</p>
+                                <p class="text-[11px] opacity-80 mt-0.5">Sistem gagal memuat library zip.</p>
+                            </div>
+                        </div>
+                    `;
+                    if(typeof lucide !== 'undefined') lucide.createIcons();
+                }
             }
 
             // Real-time editor input hook
@@ -1043,26 +1085,32 @@
                             Tulis atau unggah dokumen untuk menganalisis kesalahan ejaan.
                         </div>
                     `;
-                    lucide.createIcons();
+                    if(typeof lucide !== 'undefined') lucide.createIcons();
                     return;
                 }
+
+                // 1. Aggregate word counts to avoid redundant processing
+                const wordCounts = {};
+                wordsArray.forEach(word => {
+                    if (word.length <= 2) return;
+                    if (/^[A-Z]/.test(word)) return; // Skip capitalized words
+                    
+                    const cleanWord = word.toLowerCase().replace(/[^a-z0-9\-]/g, '');
+                    if (cleanWord.length <= 2) return;
+                    if (/^\d+$/.test(cleanWord)) return; // Skip numbers
+                    
+                    wordCounts[cleanWord] = (wordCounts[cleanWord] || 0) + 1;
+                });
 
                 const flaggedItems = {};
                 let totalTypos = 0;
                 let totalForeign = 0;
                 let totalUnknown = 0;
 
-                wordsArray.forEach(word => {
-                    const cleanWord = word.toLowerCase().replace(/[^a-z0-9\-]/g, '');
-                    
-                    if (cleanWord.length <= 2) return; 
-                    if (/^\d+$/.test(cleanWord)) return; 
-                    
-                    const isCapitalized = /^[A-Z]/.test(word);
-                    if (isCapitalized) return;
-
+                // 2. Process unique words only
+                for (const [cleanWord, count] of Object.entries(wordCounts)) {
                     const isKnownIndo = indonesianDictionary.has(cleanWord) || indonesianDictionary.has(stemIndonesian(cleanWord));
-                    if (isKnownIndo) return;
+                    if (isKnownIndo) continue;
 
                     let type = 'unknown';
                     if (commonTypos[cleanWord]) {
@@ -1073,18 +1121,17 @@
                         type = 'unknown';
                     }
 
-                    if (!flaggedItems[cleanWord]) {
-                        flaggedItems[cleanWord] = { count: 0, type: type };
-                    }
-                    flaggedItems[cleanWord].count++;
+                    flaggedItems[cleanWord] = { count: count, type: type };
                     
-                    if (type === 'typo') totalTypos++;
-                    else if (type === 'foreign') totalForeign++;
-                    else totalUnknown++;
-                });
+                    if (type === 'typo') totalTypos += count;
+                    else if (type === 'foreign') totalForeign += count;
+                    else totalUnknown += count;
+                }
 
+                // 3. Sort and limit items to render to prevent DOM bloat
                 const sortedItems = Object.entries(flaggedItems)
-                    .sort((a, b) => b[1].count - a[1].count);
+                    .sort((a, b) => b[1].count - a[1].count)
+                    .slice(0, 60); // Limit to top 60 to keep rendering fast
 
                 const totalIssues = totalTypos + totalForeign + totalUnknown;
 
@@ -1100,7 +1147,7 @@
                             </div>
                         </div>
                     `;
-                    lucide.createIcons();
+                    if(typeof lucide !== 'undefined') lucide.createIcons();
                     return;
                 }
 
@@ -1108,7 +1155,7 @@
                     <div class="p-3 rounded-xl bg-slate-50 dark:bg-zinc-950/40 text-slate-700 dark:text-zinc-300 border border-slate-200/60 dark:border-zinc-800/60 mb-3 space-y-1">
                         <p class="text-xs font-semibold flex items-center gap-1.5">
                             <i data-lucide="info" class="w-3.5 h-3.5 text-indigo-500"></i>
-                            Hasil Analisis Ejaan:
+                            Hasil Analisis Ejaan (Total: ${totalIssues}):
                         </p>
                         <div class="flex flex-wrap gap-2 mt-1 text-[10px]">
                             <span class="flex items-center gap-1 text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/20 px-2 py-0.5 rounded font-medium border border-rose-100 dark:border-rose-950/40">
@@ -1176,9 +1223,17 @@
                     `;
                 });
 
+                if (Object.keys(flaggedItems).length > 60) {
+                    html += `
+                        <div class="text-center py-2 text-slate-400 dark:text-zinc-500 text-[10px]">
+                            Menampilkan 60 teratas dari ${Object.keys(flaggedItems).length} kata yang ditemukan.
+                        </div>
+                    `;
+                }
+
                 html += `</div>`;
                 spellContent.innerHTML = html;
-                lucide.createIcons();
+                if(typeof lucide !== 'undefined') lucide.createIcons();
             }
 
             // Quick Actions Actions

@@ -3,29 +3,26 @@
 @section('title', 'Pembuat Surat Lamaran - PenaHitung')
 
 @push('scripts-top')
-    <!-- html2pdf.js for client-side PDF generation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style id="cover-letter-styles">
-        /* A4 aspect ratio and styling for preview */
+        /* Preview paper (scrollable, not clipped) */
         .a4-preview {
-            width: 100%;
-            aspect-ratio: 1 / 1.414;
+            width: 794px;
+            min-height: 1123px;
             background: white;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 2.5rem;
+            padding: 60px 70px;
             color: black;
             font-family: 'Times New Roman', Times, serif;
             font-size: 14px;
-            line-height: 1.5;
-            overflow: hidden;
-            position: relative;
+            line-height: 1.6;
+            box-sizing: border-box;
         }
         /* Ensure dark mode doesn't invert the preview paper */
         .dark .a4-preview {
             background: white;
             color: black;
         }
-        
+
         /* Template Styles */
         .template-standard { font-family: 'Times New Roman', Times, serif; }
         
@@ -34,7 +31,7 @@
             color: #111827;
         }
         .template-modern .letter-header h1 {
-            color: #2563eb; /* Blue accent */
+            color: #2563eb;
             border-bottom: 2px solid #2563eb;
             padding-bottom: 4px;
             margin-bottom: 16px;
@@ -163,6 +160,17 @@
                         <label>Kekuatan / Pengalaman Utama (1-2 kalimat)</label>
                         <textarea id="mainStrength" class="form-input" rows="3" placeholder="Saya memiliki pengalaman 3 tahun di bidang pengembangan web..."></textarea>
                     </div>
+                    <div class="form-group">
+                        <label>Daftar Lampiran (pisahkan dengan koma atau baris baru)</label>
+                        <textarea id="attachmentsList" class="form-input" rows="2" placeholder="Curriculum Vitae (CV), Fotokopi KTP, Pas Foto 4x6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Format Penulisan Lampiran</label>
+                        <select id="attachmentFormat" class="form-input">
+                            <option value="list">Daftar Berurut (Angka 1, 2, 3)</option>
+                            <option value="paragraph">Teks Sebaris (Paragraf)</option>
+                        </select>
+                    </div>
                 </div>
             </form>
 
@@ -197,14 +205,14 @@
 
             <!-- A4 Preview Container -->
             <div class="w-full flex justify-center bg-slate-100 dark:bg-zinc-950/50 rounded-2xl p-4 overflow-x-auto">
-                <!-- We set a fixed max-width for the preview to simulate A4, but keep it responsive -->
-                <div id="previewContainer" class="a4-preview template-standard max-w-[800px] shrink-0" style="min-width: 600px;">
-                    
-                    <!-- Content injected via JS -->
-                    <div id="letterContent"></div>
-                    
+                <div style="width: 596px; flex-shrink: 0;">
+                    <div id="previewContainer" class="a4-preview template-standard" style="transform-origin: top left; transform: scale(0.75); margin-bottom: -282px;">
+                        <!-- Content injected via JS -->
+                        <div id="letterContent"></div>
+                    </div>
                 </div>
             </div>
+
             
         </div>
     </div>
@@ -219,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formInputs = [
         'senderName', 'senderPhone', 'senderEmail', 'senderAddress', 'senderLink',
         'letterDate', 'jobPosition', 'hrName', 'companyName', 'companyAddress',
-        'mainStrength'
+        'mainStrength', 'attachmentsList', 'attachmentFormat'
     ];
 
     const elements = {};
@@ -326,6 +334,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const compAddress = vals.companyAddress || '[Alamat Perusahaan]';
         const strength = vals.mainStrength || '[Jelaskan pengalaman/kekuatan Anda di sini]';
         
+        const attachmentStr = vals.attachmentsList || '';
+        const attachmentFmt = vals.attachmentFormat || 'list';
+        
+        let attachmentHtml = '';
+        if (attachmentStr.trim() !== '') {
+            const items = attachmentStr.split(/[\n,]+/).map(i => i.trim()).filter(i => i.length > 0);
+            if (items.length > 0) {
+                if (attachmentFmt === 'list') {
+                    attachmentHtml = `
+                        <p style="margin: 0 0 10px 0;">Sebagai bahan pertimbangan Bapak/Ibu, bersama surat ini turut saya lampirkan:</p>
+                        <ol style="margin: 0 0 10px 0; padding-left: 20px; list-style-type: decimal; margin-left: 15px;">
+                            ${items.map(i => `<li style="margin-bottom: 3px; padding-left: 5px;">${i}</li>`).join('')}
+                        </ol>
+                        <p style="margin: 0 0 10px 0;">Saya sangat berharap dapat diberikan kesempatan wawancara agar saya dapat menjelaskan lebih rinci mengenai potensi dan kualifikasi yang saya miliki.</p>
+                    `;
+                } else {
+                    let formattedItems = '';
+                    if (items.length === 1) {
+                        formattedItems = items[0];
+                    } else if (items.length === 2) {
+                        formattedItems = items.join(' dan ');
+                    } else {
+                        const lastItem = items.pop();
+                        formattedItems = items.join(', ') + ', dan ' + lastItem;
+                    }
+                    attachmentHtml = `
+                        <p style="margin: 0 0 10px 0;">Sebagai bahan pertimbangan Bapak/Ibu, bersama surat ini turut saya lampirkan ${formattedItems}. Saya sangat berharap dapat diberikan kesempatan wawancara agar saya dapat menjelaskan lebih rinci mengenai potensi dan kualifikasi yang saya miliki.</p>
+                    `;
+                }
+            } else {
+                attachmentHtml = `<p style="margin: 0 0 10px 0;">Bersama surat ini, saya juga melampirkan Curriculum Vitae (CV) sebagai bahan pertimbangan Bapak/Ibu. Saya sangat berharap dapat diberikan kesempatan wawancara agar saya dapat menjelaskan lebih rinci mengenai potensi dan kualifikasi yang saya miliki.</p>`;
+            }
+        } else {
+            attachmentHtml = `<p style="margin: 0 0 10px 0;">Bersama surat ini, saya juga melampirkan Curriculum Vitae (CV) sebagai bahan pertimbangan Bapak/Ibu. Saya sangat berharap dapat diberikan kesempatan wawancara agar saya dapat menjelaskan lebih rinci mengenai potensi dan kualifikasi yang saya miliki.</p>`;
+        }
+        
         let headerHtml = '';
         const selectedTemplate = document.getElementById('templateSelector').value;
         
@@ -381,7 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 <p style="margin: 0 0 10px 0;">Nama saya ${name}. ${strength} Saya adalah individu yang cepat belajar, berdedikasi tinggi, dan mampu bekerja baik secara mandiri maupun dalam tim.</p>
                 
-                <p style="margin: 0 0 10px 0;">Bersama surat ini, saya juga melampirkan Curriculum Vitae (CV) sebagai bahan pertimbangan Bapak/Ibu. Saya sangat berharap dapat diberikan kesempatan wawancara agar saya dapat menjelaskan lebih rinci mengenai potensi dan kualifikasi yang saya miliki.</p>
+                ${attachmentHtml}
             </div>
 
             <div style="margin-bottom: 40px;">
@@ -400,112 +444,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listeners are bound at the top of the script
 
-    // PDF Export logic
+    // PDF Export — opens a clean popup window with only the letter content and prints it
     btnExportPDF.addEventListener('click', () => {
-        Swal.fire({
-            title: 'Mengekspor PDF...',
-            text: 'Harap tunggu sebentar',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
+        const currentTemplate = templateSelector.value;
 
-        // 1. Mock document.styleSheets to bypass html2canvas oklch parse error
-        const originalStyleSheets = document.styleSheets;
-        const letterStyleSheet = Array.from(document.styleSheets).find(sheet => sheet.ownerNode && sheet.ownerNode.id === 'cover-letter-styles');
+        // Pick the right font family for the selected template
+        const fontFamily = currentTemplate === 'template-modern' ? "'Arial', Helvetica, sans-serif"
+                         : currentTemplate === 'template-klasik' ? "'Georgia', 'Times New Roman', serif"
+                         : "'Times New Roman', Times, serif";
 
-        try {
-            Object.defineProperty(document, 'styleSheets', {
-                value: letterStyleSheet ? [letterStyleSheet] : [],
-                configurable: true
-            });
-        } catch (e) {
-            console.warn("Could not redefine document.styleSheets", e);
+        // Extra CSS needed for modern/klasik templates
+        const templateExtraCSS = currentTemplate === 'template-modern' ? `
+            .letter-header h1 { color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 4px; margin-bottom: 16px; }
+        ` : currentTemplate === 'template-klasik' ? `
+            .letter-header { text-align: center; border-bottom: 1px solid #000; margin-bottom: 20px; padding-bottom: 10px; }
+            .letter-header h1 { font-size: 18pt; text-transform: uppercase; letter-spacing: 2px; }
+        ` : '';
+
+        // Build the full HTML for the print window
+        const printHTML = `<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Surat Lamaran</title>
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 15mm 18mm;
+            font-family: ${fontFamily};
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            background: #fff;
         }
+        p  { margin: 0; }
+        ol { padding-left: 20px; margin: 0 0 10px 0; list-style-type: decimal; }
+        li { margin-bottom: 3px; }
+        strong { font-weight: bold; }
+        ${templateExtraCSS}
+    </style>
+</head>
+<body>
+    ${letterContent.innerHTML}
+</body>
+</html>`;
 
-        // 2. Proxy window.getComputedStyle to neutralize oklch values
-        const originalGetComputedStyle = window.getComputedStyle;
-        window.getComputedStyle = function(el, pseudoEl) {
-            const style = originalGetComputedStyle(el, pseudoEl);
-            return new Proxy(style, {
-                get(target, prop) {
-                    if (prop === 'getPropertyValue') {
-                        return function(propertyName) {
-                            const val = target.getPropertyValue(propertyName);
-                            if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
-                                if (propertyName.includes('background')) return 'rgb(255, 255, 255)';
-                                return 'rgb(0, 0, 0)';
-                            }
-                            return val;
-                        };
-                    }
-                    const val = target[prop];
-                    if (typeof val === 'string' && /(oklch|oklab|color-mix|lab|lch)/.test(val)) {
-                        if (prop === 'backgroundColor') return 'rgb(255, 255, 255)';
-                        if (prop.toLowerCase().includes('color')) return 'rgb(0, 0, 0)';
-                        return 'rgb(0, 0, 0)';
-                    }
-                    if (typeof val === 'function') {
-                        return val.bind(target);
-                    }
-                    return val;
-                }
-            });
-        };
-
-        // Clone the preview to remove padding/shadows for clean export
-        const printable = previewContainer.cloneNode(true);
-        printable.style.boxShadow = 'none';
-        printable.style.width = '794px'; // ~A4 width in px at 96dpi
-        printable.style.height = '1123px';
-        printable.style.padding = '50px 70px'; // margin for printing
-        printable.style.position = 'absolute';
-        printable.style.left = '-9999px';
-        document.body.appendChild(printable);
-
-        const opt = {
-            margin:       0,
-            filename:     'Surat_Lamaran_' + (elements.senderName.value.replace(/ /g, '_') || 'Kerja') + '.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-
-        const cleanup = () => {
-            // Restore document.styleSheets
-            try {
-                Object.defineProperty(document, 'styleSheets', {
-                    value: originalStyleSheets,
-                    configurable: true
-                });
-            } catch (e) {}
-            // Restore getComputedStyle
-            window.getComputedStyle = originalGetComputedStyle;
-            // Remove cloned element
-            if (printable.parentNode) {
-                document.body.removeChild(printable);
-            }
-        };
-
-        html2pdf().set(opt).from(printable).save().then(() => {
-            cleanup();
+        // Open a small popup, write the HTML, then print and close
+        const pw = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
+        if (!pw) {
             Swal.fire({
-                icon: 'success',
-                title: 'Berhasil!',
-                text: 'Surat Lamaran berhasil diunduh.',
-                timer: 2000,
-                showConfirmButton: false
+                icon: 'warning',
+                title: 'Popup Diblokir',
+                text: 'Mohon izinkan popup dari situs ini di browser Anda, lalu coba lagi.',
             });
-        }).catch(err => {
-            cleanup();
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: 'Terjadi kesalahan saat mengekspor PDF: ' + (err.message || err)
-            });
-            console.error(err);
-        });
+            return;
+        }
+        pw.document.open();
+        pw.document.write(printHTML);
+        pw.document.close();
+
+        // Wait for fonts/layout to settle, then trigger print
+        pw.onload = () => {
+            setTimeout(() => {
+                pw.focus();
+                pw.print();
+                // pw.close() — let user close; some browsers need the window open to save PDF
+            }, 300);
+        };
+
+        // Fallback if onload already fired
+        setTimeout(() => {
+            try { pw.focus(); pw.print(); } catch(e) {}
+        }, 800);
     });
 
 });
