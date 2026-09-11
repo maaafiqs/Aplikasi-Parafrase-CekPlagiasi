@@ -40,9 +40,9 @@ $serverlessEnv = [
     'VIEW_COMPILED_PATH' => '/tmp/views',
     'APP_SERVICES_CACHE' => '/tmp/services.php',
     'APP_PACKAGES_CACHE' => '/tmp/packages.php',
-    'APP_CONFIG_CACHE' => '/tmp/config.php',
-    'APP_ROUTES_CACHE' => '/tmp/routes.php',
     'APP_EVENTS_CACHE' => '/tmp/events.php',
+    'APP_MAINTENANCE_DRIVER' => 'file',
+    'HASH_DRIVER' => 'bcrypt',
 ];
 
 foreach ($serverlessEnv as $k => $v) {

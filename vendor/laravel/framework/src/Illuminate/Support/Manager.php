@@ -70,9 +70,9 @@ abstract class Manager
     {
         $driver = enum_value($driver) ?: $this->getDefaultDriver();
 
-        if (is_null($driver)) {
+        if (empty($driver)) {
             throw new InvalidArgumentException(sprintf(
-                'Unable to resolve NULL driver for [%s].', static::class
+                'Unable to resolve empty or NULL driver for [%s].', static::class
             ));
         }
 
@@ -101,7 +101,7 @@ abstract class Manager
 
         $method = 'create'.Str::studly($driver).'Driver';
 
-        if (method_exists($this, $method)) {
+        if ($method !== 'createDriver' && method_exists($this, $method)) {
             return $this->$method();
         }
 
