@@ -6,6 +6,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TulCek (Tulis dan Cek) — Toolkit Profesional Karir & Teks')</title>
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('images/TulCek Blue.png') }}">
+    
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,8 +100,9 @@
         <!-- Header Section -->
         <header class="relative z-50 flex flex-col md:flex-row justify-between items-center mb-8 border-b border-slate-200/60 dark:border-zinc-800/60 pb-6 gap-4">
             <a href="{{ url('/') }}" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+                <div class="w-10 h-10 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <img src="{{ asset('images/TulCek Blue.png') }}" alt="TulCek Logo" class="w-10 h-10 object-contain dark:hidden">
+                    <img src="{{ asset('images/TulCek White.png') }}" alt="TulCek Logo" class="w-10 h-10 object-contain hidden dark:block">
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
