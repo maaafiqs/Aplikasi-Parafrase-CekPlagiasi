@@ -13,6 +13,12 @@ class AppServiceProvider extends ServiceProvider
     {
         if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || env('VERCEL')) {
             $this->app->useStoragePath('/tmp/storage');
+            
+            config([
+                'session.driver' => config('session.driver') ?: 'file',
+                'cache.default' => config('cache.default') ?: 'array',
+                'logging.default' => config('logging.default') ?: 'stderr',
+            ]);
         }
     }
 
