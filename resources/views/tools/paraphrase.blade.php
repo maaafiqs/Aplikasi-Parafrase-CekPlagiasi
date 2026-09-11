@@ -206,10 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content || '';
-            const res = await fetch('/api/paraphrase', {
+            let res = await fetch('/api/paraphrase', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({ 
@@ -217,6 +218,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     mode: currentMode 
                 })
             });
+
+            if (!res.ok) {
+                // Fallback in case Vercel rewrites or strips /api
+                res = await fetch('/paraphrase-process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    body: JSON.stringify({ 
+                        text: text, 
+                        mode: currentMode 
+                    })
+                });
+            }
 
             if (!res.ok) {
                 throw new Error(`HTTP error! status: ${res.status}`);

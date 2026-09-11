@@ -22,7 +22,7 @@ Route::get('/ats-checker', function () {
     return view('tools.ats-checker');
 });
 
-Route::post('/api/paraphrase', function (\Illuminate\Http\Request $request) {
+$paraphraseHandler = function (\Illuminate\Http\Request $request) {
     $text = $request->input('text', '');
     $mode = $request->input('mode', 'standard');
 
@@ -41,9 +41,13 @@ Route::post('/api/paraphrase', function (\Illuminate\Http\Request $request) {
         'similarity' => $result['similarity'],
         'originality' => $result['originality']
     ]);
-});
+};
 
-Route::post('/api/translate', function (\Illuminate\Http\Request $request) {
+Route::post('/api/paraphrase', $paraphraseHandler);
+Route::post('/paraphrase-process', $paraphraseHandler);
+Route::post('/paraphrase', $paraphraseHandler);
+
+$translateHandler = function (\Illuminate\Http\Request $request) {
     $text = $request->input('text');
     $lang = $request->input('lang', 'en');
     $sl = $request->input('sl', 'id');
@@ -56,4 +60,7 @@ Route::post('/api/translate', function (\Illuminate\Http\Request $request) {
     }
     
     return response()->json(['translatedText' => $text]);
-});
+};
+
+Route::post('/api/translate', $translateHandler);
+Route::post('/translate', $translateHandler);
