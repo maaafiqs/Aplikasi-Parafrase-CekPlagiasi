@@ -51,6 +51,10 @@ foreach ($serverlessEnv as $k => $v) {
     $_SERVER[$k] = $v;
 }
 
+$_SERVER['HTTPS'] = 'on';
+$_SERVER['SERVER_PORT'] = '443';
+$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+
 // Ensure writable storage and views directories exist in /tmp for Vercel serverless environment
 $storagePaths = [
     '/tmp/storage',

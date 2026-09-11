@@ -27,7 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || env('VERCEL')) {
+        if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || env('VERCEL') || app()->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
             $dirs = [
                 '/tmp/storage/framework/views',
                 '/tmp/storage/framework/sessions',
