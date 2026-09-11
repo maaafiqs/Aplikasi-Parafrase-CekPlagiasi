@@ -5,35 +5,49 @@ $appKey = getenv('APP_KEY') ?: ($_ENV['APP_KEY'] ?? 'base64:z8LAlxHo9ufEoZgYKyVr
 $appDebug = getenv('APP_DEBUG') ?: ($_ENV['APP_DEBUG'] ?? 'true');
 $appUrl = getenv('APP_URL') ?: ($_ENV['APP_URL'] ?? 'https://tulcek-app.vercel.app');
 
+// Hard-code all critical drivers for serverless
 putenv('VERCEL=1');
 putenv("APP_KEY={$appKey}");
-putenv("APP_DEBUG={$appDebug}");
+putenv("APP_DEBUG=true");
 putenv("APP_URL={$appUrl}");
 putenv('APP_ENV=production');
 putenv('SESSION_DRIVER=array');
+putenv('SESSION_LIFETIME=120');
 putenv('CACHE_STORE=array');
 putenv('CACHE_DRIVER=array');
 putenv('QUEUE_CONNECTION=sync');
-putenv('LOG_CHANNEL=stderr');
+putenv('LOG_CHANNEL=stack');
+putenv('MAIL_MAILER=log');
+putenv('BROADCAST_CONNECTION=log');
+putenv('FILESYSTEM_DISK=local');
 putenv('VIEW_COMPILED_PATH=/tmp/views');
 
 $_ENV['VERCEL'] = '1';
 $_ENV['APP_KEY'] = $appKey;
-$_ENV['APP_DEBUG'] = $appDebug;
+$_ENV['APP_DEBUG'] = 'true';
 $_ENV['APP_URL'] = $appUrl;
 $_ENV['APP_ENV'] = 'production';
 $_ENV['SESSION_DRIVER'] = 'array';
+$_ENV['SESSION_LIFETIME'] = '120';
 $_ENV['CACHE_STORE'] = 'array';
 $_ENV['CACHE_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
-$_ENV['LOG_CHANNEL'] = 'stderr';
+$_ENV['LOG_CHANNEL'] = 'stack';
+$_ENV['MAIL_MAILER'] = 'log';
+$_ENV['BROADCAST_CONNECTION'] = 'log';
+$_ENV['FILESYSTEM_DISK'] = 'local';
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
 
 $_SERVER['VERCEL'] = '1';
 $_SERVER['APP_KEY'] = $appKey;
-$_SERVER['APP_DEBUG'] = $appDebug;
+$_SERVER['APP_DEBUG'] = 'true';
 $_SERVER['SESSION_DRIVER'] = 'array';
-$_SERVER['LOG_CHANNEL'] = 'stderr';
+$_SERVER['CACHE_STORE'] = 'array';
+$_SERVER['QUEUE_CONNECTION'] = 'sync';
+$_SERVER['LOG_CHANNEL'] = 'stack';
+$_SERVER['MAIL_MAILER'] = 'log';
+$_SERVER['BROADCAST_CONNECTION'] = 'log';
+$_SERVER['FILESYSTEM_DISK'] = 'local';
 
 // Ensure writable storage and views directories exist in /tmp for Vercel serverless environment
 $storagePaths = [
