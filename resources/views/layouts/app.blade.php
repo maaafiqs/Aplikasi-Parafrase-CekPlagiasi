@@ -64,6 +64,7 @@
             color: #1e293b !important; /* slate-800 */
             border: 1px solid #e2e8f0 !important; /* slate-200 */
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+            padding: 1.75rem !important;
         }
         .dark .swal2-popup {
             background: #18181b !important; /* zinc-900 */
@@ -74,15 +75,178 @@
         .swal2-title {
             color: #0f172a !important; /* slate-900 */
             font-weight: 700 !important;
+            font-size: 1.5rem !important;
+            letter-spacing: -0.02em !important;
         }
         .dark .swal2-title {
             color: #ffffff !important;
         }
         .swal2-html-container {
             color: #64748b !important; /* slate-500 */
+            font-size: 0.95rem !important;
         }
         .dark .swal2-html-container {
             color: #a1a1aa !important; /* zinc-400 */
+        }
+        .swal2-styled {
+            border-radius: 0.75rem !important;
+            font-weight: 600 !important;
+            padding: 0.625rem 1.5rem !important;
+            transition: all 0.2s ease !important;
+        }
+        .swal2-styled:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+        .swal2-styled:active {
+            transform: translateY(0);
+        }
+        .swal2-close {
+            color: #94a3b8 !important;
+            transition: color 0.15s ease !important;
+            top: 0.75rem !important;
+            right: 0.75rem !important;
+        }
+        .swal2-close:hover {
+            color: #475569 !important;
+        }
+        .dark .swal2-close {
+            color: #71717a !important;
+        }
+        .dark .swal2-close:hover {
+            color: #d4d4d8 !important;
+        }
+        /* Fix SweetAlert2 success icon circular backgrounds in dark mode */
+        .swal2-icon.swal2-success .swal2-success-circular-line-left,
+        .swal2-icon.swal2-success .swal2-success-circular-line-right,
+        .swal2-icon.swal2-success .swal2-success-fix {
+            background-color: #ffffff !important;
+        }
+        .dark .swal2-icon.swal2-success .swal2-success-circular-line-left,
+        .dark .swal2-icon.swal2-success .swal2-success-circular-line-right,
+        .dark .swal2-icon.swal2-success .swal2-success-fix {
+            background-color: #18181b !important;
+        }
+
+        /* Custom sleek scrollbar for popup contents */
+        .custom-modal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-modal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-modal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.4);
+            border-radius: 99px;
+        }
+        .dark .custom-modal-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.65);
+        }
+        .dark .custom-modal-scroll::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile Screen Optimizations for SweetAlert2 & Popups */
+        @media (max-width: 640px) {
+            .swal2-container {
+                padding: 0.75rem !important;
+            }
+            .swal2-popup {
+                width: calc(100vw - 1.5rem) !important;
+                max-width: calc(100vw - 1.5rem) !important;
+                padding: 1.25rem 0.875rem !important;
+                border-radius: 1.25rem !important;
+                margin: auto !important;
+            }
+            .swal2-title {
+                font-size: 1.25rem !important;
+                line-height: 1.35 !important;
+                padding: 0.25rem 0.5rem 0 !important;
+                margin-bottom: 0.35rem !important;
+            }
+            .swal2-html-container {
+                font-size: 0.875rem !important;
+                line-height: 1.55 !important;
+                margin: 0.4rem 0.25rem 0.75rem !important;
+                padding: 0 !important;
+            }
+            /* Scaled SweetAlert2 icons on mobile so they don't dominate screen */
+            .swal2-icon {
+                width: 3.5rem !important;
+                height: 3.5rem !important;
+                margin: 0.5rem auto 0.5rem !important;
+                border-width: 3px !important;
+            }
+            .swal2-icon .swal2-icon-content {
+                font-size: 2rem !important;
+                line-height: 3.5rem !important;
+            }
+            /* Success Icon scaling */
+            .swal2-icon.swal2-success .swal2-success-ring {
+                width: 3.5rem !important;
+                height: 3.5rem !important;
+                border-width: 3px !important;
+            }
+            .swal2-icon.swal2-success [class^='swal2-success-line'] {
+                height: 3px !important;
+            }
+            .swal2-icon.swal2-success .swal2-success-line-tip {
+                width: 1.15rem !important;
+                top: 1.85rem !important;
+                left: 0.6rem !important;
+            }
+            .swal2-icon.swal2-success .swal2-success-line-long {
+                width: 1.95rem !important;
+                top: 1.55rem !important;
+                right: 0.45rem !important;
+            }
+            .swal2-icon.swal2-success .swal2-success-fix {
+                width: 5px !important;
+                left: 1.25rem !important;
+                top: 0.4rem !important;
+            }
+            /* Error Icon scaling */
+            .swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+                top: 1.6rem !important;
+                height: 3px !important;
+                width: 2rem !important;
+            }
+            .swal2-icon.swal2-error [class^='swal2-x-mark-line'][class$='left'] {
+                left: 0.75rem !important;
+            }
+            .swal2-icon.swal2-error [class^='swal2-x-mark-line'][class$='right'] {
+                right: 0.75rem !important;
+            }
+            /* Actions and buttons on mobile */
+            .swal2-actions {
+                width: 100% !important;
+                margin: 0.875rem 0 0.25rem !important;
+                gap: 0.5rem !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+            }
+            .swal2-styled {
+                font-size: 0.875rem !important;
+                padding: 0.625rem 1rem !important;
+                border-radius: 0.75rem !important;
+                min-height: 42px !important;
+                margin: 0 !important;
+            }
+            .swal2-actions .swal2-confirm,
+            .swal2-actions .swal2-cancel {
+                flex: 1 1 calc(50% - 0.5rem) !important;
+                min-width: 100px !important;
+            }
+            .swal2-actions:not(:has(.swal2-cancel:not([style*="display: none"]))) .swal2-confirm {
+                flex: 0 1 auto !important;
+                min-width: 120px !important;
+                width: 100% !important;
+                max-width: 180px !important;
+            }
         }
         
         @stack('styles')
@@ -314,20 +478,22 @@
                 Swal.fire({
                     title: 'Tentang & Riwayat Versi',
                     html: `
-                        <div class="text-left text-sm space-y-4 mt-2 max-h-[65vh] overflow-y-auto pr-1">
-                            <div class="text-center mb-4 text-slate-600 dark:text-zinc-400 text-xs">
+                        <div class="text-left text-sm space-y-3.5 mt-2 max-h-[60vh] sm:max-h-[65vh] overflow-y-auto pr-1 sm:pr-1.5 custom-modal-scroll">
+                            <div class="text-center mb-3 sm:mb-4 text-slate-600 dark:text-zinc-400 text-xs">
                                 TulCek (Tulis dan Cek) dikembangkan dengan ❤ untuk membantu Anda dalam penulisan dan urusan karir. <br/>
                                 <span class="font-semibold text-slate-700 dark:text-zinc-300 mt-1 block">Dikembangkan oleh Maaafiqs Dev</span>
                             </div>
                             
                             <!-- Versi 1.4 -->
-                            <div class="p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <i data-lucide="sparkles" class="w-4 h-4 text-emerald-500"></i>
-                                    <span class="font-bold text-emerald-700 dark:text-emerald-400">Versi 1.4 (Saat Ini)</span>
-                                    <span class="ml-auto text-xs text-slate-400 dark:text-zinc-500">11 September 2026</span>
+                            <div class="p-3.5 sm:p-4 bg-emerald-50/50 dark:bg-emerald-950/20 rounded-xl border border-emerald-100 dark:border-emerald-800/30 transition-colors">
+                                <div class="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
+                                    <div class="flex items-center gap-1.5 font-bold text-emerald-700 dark:text-emerald-400 text-xs sm:text-sm">
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 shrink-0"></i>
+                                        <span>Versi 1.4 (Saat Ini)</span>
+                                    </div>
+                                    <span class="text-[11px] sm:text-xs text-slate-400 dark:text-zinc-500 shrink-0 font-normal">11 September 2026</span>
                                 </div>
-                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                <ul class="list-disc pl-4 sm:pl-5 space-y-1.5 text-slate-600 dark:text-zinc-400 text-[11.5px] sm:text-xs leading-relaxed">
                                     <li><strong>Logo Resmi Baru & Tema Adaptif</strong>: Implementasi logo TulCek Blue (Light Mode) & TulCek White (Dark Mode) yang beralih otomatis, beserta ikon Favicon tab browser.</li>
                                     <li><strong>Deployment Cloud Serverless di Vercel</strong>: Optimalisasi produksi serverless di Vercel (PHP 8.3 & Laravel), penanganan rute statis gambar, optimasi bundle Vite, dan CSRF exemption untuk API.</li>
                                     <li><strong>Smart Paraphrasing Tool</strong>: Alat parafrase cerdas anti-plagiarisme dengan perbendaharaan sinonim bahasa Indonesia & multi-tier back-translation.</li>
@@ -337,12 +503,12 @@
                             </div>
 
                             <!-- Versi 1.3 -->
-                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.3</span>
-                                    <span class="ml-auto text-xs text-slate-400 dark:text-zinc-500">6 Agustus 2026</span>
+                            <div class="p-3.5 sm:p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50 transition-colors">
+                                <div class="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300 text-xs sm:text-sm">Versi 1.3</span>
+                                    <span class="text-[11px] sm:text-xs text-slate-400 dark:text-zinc-500 shrink-0 font-normal">6 Agustus 2026</span>
                                 </div>
-                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                <ul class="list-disc pl-4 sm:pl-5 space-y-1.5 text-slate-600 dark:text-zinc-400 text-[11.5px] sm:text-xs leading-relaxed">
                                     <li>Perbaikan ekspor PDF Surat Lamaran: isi tidak lagi kosong atau terpotong ke halaman kedua.</li>
                                     <li>Ganti engine ekspor PDF dari <em>html2canvas</em> ke sistem <em>print popup window</em> berbasis browser — instan & kualitas teks tajam vektor.</li>
                                     <li>Menghilangkan header/footer bawaan browser (tanggal, URL, nomor halaman) pada hasil PDF.</li>
@@ -351,25 +517,25 @@
                             </div>
 
                             <!-- Versi 1.2 -->
-                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.2</span>
+                            <div class="p-3.5 sm:p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50 transition-colors">
+                                <div class="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300 text-xs sm:text-sm">Versi 1.2</span>
                                 </div>
-                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                <ul class="list-disc pl-4 sm:pl-5 space-y-1.5 text-slate-600 dark:text-zinc-400 text-[11.5px] sm:text-xs leading-relaxed">
                                     <li>Perbaikan bug macet (freeze) saat upload file Word besar.</li>
                                     <li>Peningkatan performa UI menggunakan sistem Asynchronous.</li>
                                     <li>Perombakan antarmuka donasi (Dukungan Saweria).</li>
-                                    <li>Penyembunyian menu navigasi ke dalam *dropdown* untuk UI lebih bersih.</li>
+                                    <li>Penyembunyian menu navigasi ke dalam <em>dropdown</em> untuk UI lebih bersih.</li>
                                     <li>Penonaktifan native spellchecker yang memberatkan browser.</li>
                                 </ul>
                             </div>
 
                             <!-- Versi 1.1 -->
-                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.1</span>
+                            <div class="p-3.5 sm:p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50 transition-colors">
+                                <div class="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300 text-xs sm:text-sm">Versi 1.1</span>
                                 </div>
-                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                <ul class="list-disc pl-4 sm:pl-5 space-y-1.5 text-slate-600 dark:text-zinc-400 text-[11.5px] sm:text-xs leading-relaxed">
                                     <li>Penambahan alat pembuat CV ATS & ATS Checker.</li>
                                     <li>Integrasi deteksi referensi (Mendeley/Zotero) dari file .docx.</li>
                                     <li>Penyempurnaan warna tema (Dark Mode) yang lebih redup.</li>
@@ -377,11 +543,11 @@
                             </div>
 
                             <!-- Versi 1.0 -->
-                            <div class="p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="font-bold text-slate-700 dark:text-zinc-300">Versi 1.0</span>
+                            <div class="p-3.5 sm:p-4 bg-slate-50 dark:bg-zinc-800/50 rounded-xl border border-slate-100 dark:border-zinc-700/50 transition-colors">
+                                <div class="flex items-center justify-between gap-1.5 mb-2 flex-wrap">
+                                    <span class="font-bold text-slate-700 dark:text-zinc-300 text-xs sm:text-sm">Versi 1.0</span>
                                 </div>
-                                <ul class="list-disc pl-5 space-y-1 text-slate-600 dark:text-zinc-400 text-xs">
+                                <ul class="list-disc pl-4 sm:pl-5 space-y-1.5 text-slate-600 dark:text-zinc-400 text-[11.5px] sm:text-xs leading-relaxed">
                                     <li>Rilis perdana aplikasi TulCek (Tulis dan Cek).</li>
                                     <li>Fitur Analisis Teks (Penghitung Kata, Karakter, Kalimat).</li>
                                     <li>Sistem Pemeriksa Ejaan & Typo offline berbasis JS.</li>
@@ -390,7 +556,8 @@
                             </div>
                         </div>
                     `,
-                    width: '36em',
+                    width: 'min(38em, 94vw)',
+                    showCloseButton: true,
                     confirmButtonText: 'Tutup',
                     confirmButtonColor: '#6366f1',
                     didOpen: () => {
